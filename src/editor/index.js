@@ -3,6 +3,8 @@ import React from 'react';
 import { Editor, EditorState, RichUtils } from 'draft-js';
 import { connect } from 'react-redux'
 
+import { actionCreateEditorState, actionStateChanges, loadAndInitEditorAction } from './actions'
+
 const mapStateToProps = (state, ownProps) => {
   return {
     editorState: state.editorState
@@ -11,27 +13,13 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    initState: (editorState) => {
-      dispatch( actionCreateEditorState(editorState) )
+    loadAndInitEditor: (editorState) => {
+      dispatch( loadAndInitEditorAction(editorState) )
     },
     onChange: (editorState) => {
-      console.log("Change", editorState);
+      console.log("Change", editorState.getLastChangeType());
       dispatch( actionStateChanges(editorState) )
     }
-  }
-}
-
-function actionCreateEditorState(editorState) {
-  return {
-    type: 'INIT_EDITOR_STATE',
-    editorState: editorState
-  }
-}
-
-function actionStateChanges(editorState) {
-  return {
-    type: 'EDITOR_STATE_CHANGES',
-    editorState: editorState
   }
 }
 
@@ -40,11 +28,11 @@ class EditorComponent extends React.Component {
     super(props);
 
     //The editorState is initializd at empty, this is were you want to add your data, load a file for example.
-    this.props.initState(this.props.editorState);
+    console.log("Load", this.props.editorState);
+    this.props.loadAndInitEditor(this.props.editorState);
 
     this.focus = () => this.refs.editor.focus();
     this.logState = () => console.log(this.props.editorState.toJS());
-
   }
 
   render() {
