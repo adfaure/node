@@ -1,5 +1,6 @@
 import { storageAvailable } from './../utils'
-import { convertToRaw } from 'draft-js';
+import { Raw } from 'slate'
+
 /**
  * Logs all actions and states after they are dispatched.
  */
@@ -12,7 +13,7 @@ const localStoragePersistMdw = store => next => action => {
     }
     console.log("not pass:", action)
     const state = store.getState();
-    const rawContent = convertToRaw(state.editorState.getCurrentContent());
+    const rawContent = Raw.serialize(state.editorState);
     console.log(rawContent);
     localStorage.setItem('editorState', JSON.stringify(rawContent));
   }

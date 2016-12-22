@@ -1,5 +1,5 @@
 import { storageAvailable } from './../utils'
-import { convertFromRaw } from 'draft-js';
+import { Raw } from 'slate'
 
 function actionCreateEditorState(editorState) {
   return {
@@ -28,7 +28,7 @@ function loadAndInitEditorAction(editorState) {
     if(storageAvailable('localStorage')) {
       var rawEditorContent = localStorage.getItem('editorState');
       if(rawEditorContent) {
-        var contentState = convertFromRaw(JSON.parse(rawEditorContent));
+        var contentState = Raw.deserialize(JSON.parse(rawEditorContent));
         dispatch(actionPushEditoreChange(contentState));
       }
     } else {

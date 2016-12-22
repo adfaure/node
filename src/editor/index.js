@@ -1,7 +1,9 @@
 import ReactDOM from 'react-dom';
-import React from 'react';
-import { Editor, EditorState, RichUtils } from 'draft-js';
 import { connect } from 'react-redux'
+import React from 'react';
+
+// Import the Slate editor.
+import { Editor } from 'slate'
 
 import { actionCreateEditorState, actionStateChanges, loadAndInitEditorAction } from './actions'
 
@@ -17,12 +19,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch( loadAndInitEditorAction(editorState) )
     },
     onChange: (editorState) => {
-      console.log("Change", editorState.getLastChangeType());
       dispatch( actionStateChanges(editorState) )
     }
   }
 }
 
+// Define our app...
 class EditorComponent extends React.Component {
   constructor(props) {
     super(props);
@@ -37,42 +39,15 @@ class EditorComponent extends React.Component {
 
   render() {
     return (
-      <div style={styles.root}>
-        <div style={styles.editor} onClick={this.focus}>
-          <Editor
-            editorState={this.props.editorState}
-            onChange={this.props.onChange}
-            ref="editor"
-          />
-        </div>
-        <input
-          onClick={this.logState}
-          style={styles.button}
-          type="button"
-          value="Log State"
+      <Editor
+        state={this.props.editorState}
+        onChange={this.props.onChange}
+        ref="editor"
         />
-      </div>
     );
   }
-}
 
-const styles = {
-  root: {
-    fontFamily: '\'Helvetica\', sans-serif',
-    padding: 20,
-    width: 600,
-  },
-  editor: {
-    border: '1px solid #ccc',
-    cursor: 'text',
-    minHeight: 80,
-    padding: 10,
-  },
-  button: {
-    marginTop: 10,
-    textAlign: 'center',
-  },
-};
+}
 
 const ReduxEditor = connect(
   mapStateToProps,
