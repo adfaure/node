@@ -9,7 +9,6 @@ module.exports = function TestPlugin(options) {
   return {
 
     onKeyDown(event: Event, data: Object, state: State, editor: Editor) {
-      console.log("onKeyDown", data);
       console.log(state.anchorBlock.toJS());
     },
     
@@ -18,9 +17,21 @@ module.exports = function TestPlugin(options) {
     },
 
     onSelect(event: Event, data: Object, state: State, editor: Editor) {
+
       if(didBlockChange(state.selection, data.selection)) {
-        return state.transform().setBlock('paragraph').moveTo(data.selection).setBlock('used').apply();
+
+        return state.transform()
+                    .setBlock({
+                      data: { metaData: "yahouuouu" },
+                      type: 'paragraph',
+                      isVoid: false
+                    })
+                    .moveTo(data.selection)
+                    .setBlock('used')
+                    .apply();
+
       }
+
     },
 
     onBlur(event: Event, data: Object, state: State, editor: Editor) {

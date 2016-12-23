@@ -35,7 +35,7 @@ const plugins = [
   MarkHotkeyPlugin({ key: 'i', type: 'italic' }),
   MarkHotkeyPlugin({ key: 'd', type: 'strikethrough' }),
   MarkHotkeyPlugin({ key: 'u', type: 'underline' }),
-  // TestPlugin(),
+  TestPlugin(),
   BlockParserPlugin()
 ]
 
