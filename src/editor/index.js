@@ -1,15 +1,19 @@
 import ReactDOM from 'react-dom';
 import { connect } from 'react-redux'
 import React from 'react';
-
+import katex from 'katex';
+import { markdown } from 'markdown';
+import { Plain } from 'slate'
 // Import the Slate editor.
-import { Editor } from 'slate'
+import { Editor, Html } from 'slate'
 import { MarkHotkeyPlugin, TestPlugin, BlockParserPlugin } from './plugins'
 
 import { actionCreateEditorState, actionStateChanges, loadAndInitEditorAction } from './actions'
 
 // Import the keycode module.
 import keycode from 'keycode'
+
+
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -30,13 +34,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
 // Use the much clearer key names instead of key codes!
 const plugins = [
-  MarkHotkeyPlugin({ key: 'b', type: 'bold' }),
-  MarkHotkeyPlugin({ key: '`', type: 'code' }),
-  MarkHotkeyPlugin({ key: 'i', type: 'italic' }),
-  MarkHotkeyPlugin({ key: 'd', type: 'strikethrough' }),
-  MarkHotkeyPlugin({ key: 'u', type: 'underline' }),
-  TestPlugin(),
-  BlockParserPlugin()
 ]
 
 
@@ -57,29 +54,42 @@ class EditorComponent extends React.Component {
         nodes : {
           used: props => <div><u>{props.children}</u></div>,
         }
-      }
+      },
+      display : true,
     }
 
     //The editorState is initialized at empty, this is were you want to add your data, load a file for example.
-    console.log("Load", this.props.editorState);
     this.props.loadAndInitEditor(this.props.editorState);
 
-    this.focus = () => this.refs.editor.focus();
-    this.logState = () => console.log(this.props.editorState.toJS());
+    this.focus = () => { this.refs.editor.focus(); this.setState({display : true}); }
+    this.logState = () => console.log(this.props.editorState.toJS()) ;
+    this.getDisplay = () => {return this.display};
+  
 
   }
 
   render() {
     return (
-      <Editor
-        plugins={plugins}
-        schema={this.state.schema}
-        state={this.props.editorState}
-        onChange={this.props.onChange}
-        ref="editor"
-        />
+    <div>
+      <div className={ this.state.display ? "displayBlock" : "displayNone" }>
+        <Editor
+          onBlur={ () => { this.setState({display : false}); } }
+          className="RichEditor-editor"
+          plugins={plugins}
+          schema={this.state.schema}
+          state={this.props.editorState}
+          onChange={this.props.onChange}
+          ref="editor"
+          />
+      </div>
+      <div className={ !this.state.display ? "displayBlock" : "displayNone" } onClick={this.focus}>
+        <div className="RichEditor-editor" dangerouslySetInnerHTML={ { __html : katex.renderToString(Plain.serialize(this.props.editorState)) } } />
+      </div>
+    </div>
     );
   }
+
+
 
 }
 
