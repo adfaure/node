@@ -28,8 +28,8 @@ function loadAndInitEditorAction(editorState) {
     if(storageAvailable('localStorage')) {
       var rawEditorContent = localStorage.getItem('editorState');
       if(rawEditorContent) {
-        var contentState = Raw.deserialize(JSON.parse(rawEditorContent));
-        dispatch(actionPushEditoreChange(contentState));
+        console.log(rawEditorContent);
+        dispatch(actionPushEditoreChange(rawEditorContent));
       }
     } else {
       dispatch(actionCreateEditorState(editorState));

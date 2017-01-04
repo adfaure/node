@@ -2,6 +2,8 @@ var index = require('file?name=[name].[ext]!../assets/index.html')
 var index = require('file?name=[name].[ext]!../assets/styles.css')
 var index = require('file?name=[name].[ext]!katex/dist/katex.min.css')
 
+var index = require('file?name=[name].[ext]!codemirror/lib/codemirror.css')
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
@@ -13,16 +15,7 @@ import { Raw } from 'slate'
 import { RichEditor } from './editor';
 import { localStoragePersistMdw } from './editor/middlewares';
 // Create our initial state...
-const initialState = Raw.deserialize({
-  nodes: [
-    {
-      kind: 'block',
-      type: 'paragraph',
-      nodes: [
-      ]
-    }
-  ]
-}, { terse: true })
+const initialState = "Hello"
 
 let store = createStore(function reducer(state = { editorState: initialState }, action) {
   console.log("state", state);

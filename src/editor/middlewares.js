@@ -11,8 +11,8 @@ const localStoragePersistMdw = store => next => action => {
       return result;
     }
     const state = store.getState();
-    const rawContent = Raw.serialize(state.editorState);
-    localStorage.setItem('editorState', JSON.stringify(rawContent));
+    const rawContent = state.editorState;
+    localStorage.setItem('editorState', rawContent);
   }
   return result
 }
