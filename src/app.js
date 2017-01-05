@@ -10,11 +10,10 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk'
 
-import { CMEditor } from './editor';
+import codemirror from 'codemirror';
+import { LocalStorageEditor } from './editor';
 
 let store = createStore(function reducer(state = {}, action) {
-  console.log("state", state);
-  console.log("action", action);
   switch (action.type) {
     case 'INIT_EDITOR_STATE':
       return Object.assign({}, state, { editorState: action.editorState })
@@ -27,9 +26,12 @@ let store = createStore(function reducer(state = {}, action) {
   }
 }, applyMiddleware(thunkMiddleware));
 
+
 ReactDOM.render(
+
   <Provider store={store}>
-    <CMEditor initialContent="# hello"/>
+    <LocalStorageEditor />
   </Provider>,
+
   document.getElementById('app')
 );
