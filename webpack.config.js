@@ -1,5 +1,10 @@
+var webpack = require("webpack");
+
 module.exports = {
-    entry: './src/app.js',
+    entry: {
+      app: './src/app.js',
+      vendor: ['react', 'react-dom', 'codemirror', 'react-redux', 'redux', 'redux-thunk']
+    },
     output: {
         path: './bin',
         filename: 'app.bundle.js',
@@ -12,5 +17,8 @@ module.exports = {
         },
         {test: /\.json$/, loader: 'json-loader'}
         ]
-    }
+    },
+    plugins: [
+      new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
+    ]
 }

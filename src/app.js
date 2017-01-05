@@ -10,14 +10,9 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk'
 
-import { Raw } from 'slate'
+import { CMEditor } from './editor';
 
-import { RichEditor } from './editor';
-import { localStoragePersistMdw } from './editor/middlewares';
-// Create our initial state...
-const initialState = "Hello"
-
-let store = createStore(function reducer(state = { editorState: initialState }, action) {
+let store = createStore(function reducer(state = {}, action) {
   console.log("state", state);
   console.log("action", action);
   switch (action.type) {
@@ -30,11 +25,11 @@ let store = createStore(function reducer(state = { editorState: initialState }, 
     default:
       return state;
   }
-}, applyMiddleware(localStoragePersistMdw, thunkMiddleware));
+}, applyMiddleware(thunkMiddleware));
 
 ReactDOM.render(
   <Provider store={store}>
-    <RichEditor />
+    <CMEditor initialContent="# hello"/>
   </Provider>,
   document.getElementById('app')
 );
