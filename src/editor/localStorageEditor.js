@@ -1,18 +1,16 @@
 import React from 'react';
-
 import codemirror from 'codemirror';
 
-import { CMEditor } from './editorComponent';
+import xml from 'codemirror/mode/xml/xml'
 
+import { CMEditor } from './editorComponent';
 
 // Define our app...
 class EditorComponent extends React.Component {
 
   constructor(props) {
     super(props);
-
-    this.doc = codemirror.Doc(localStorage.getItem('editorState'));
-
+    this.doc = codemirror.Doc(localStorage.getItem('editorState'), 'xml');
   }
 
   onChange(editor) {

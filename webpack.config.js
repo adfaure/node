@@ -3,7 +3,12 @@ var webpack = require("webpack");
 module.exports = {
     entry: {
       app: './src/app.js',
-      vendor: ['react', 'react-dom', 'codemirror', 'react-redux', 'redux', 'redux-thunk']
+      vendor: [ 'react', 
+                'react-dom',
+                'react-redux', 
+                'redux',
+                'redux-thunk'
+                ]
     },
     output: {
         path: './bin',
@@ -19,6 +24,9 @@ module.exports = {
         ]
     },
     plugins: [
-      new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js")
+      new webpack.optimize.CommonsChunkPlugin(/* chunkName= */"vendor", /* filename= */"vendor.bundle.js"),
+      new webpack.DefinePlugin({
+        "require.specified": "require.resolve"
+      })
     ]
 }
