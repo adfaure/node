@@ -1,7 +1,11 @@
 import React from 'react';
 
-import CodeMirror from 'codemirror';
-import javascript from 'codemirror/mode/javascript/javascript'
+import CodeMirror from 'codemirror';;
+import 'codemirror/addon/hint/show-hint.js';
+import 'file?name=[name].[ext]!codemirror/lib/codemirror.css'
+
+import 'codemirror/mode/javascript/javascript';
+import 'codemirror/mode/xml/xml';
 
 class EditorComponent extends React.Component {
 
@@ -9,34 +13,31 @@ class EditorComponent extends React.Component {
     super(props);
   }
 
-  
-  // componentWillReceiveProps() {
-  //   this.codeMirror.
-  // },
-
   componentDidMount() {
     //Get the initial string value
     let initialValue = this.props.initialContent || "";
     //Get/init the mode
     let mode = this.props.mode || "javascript";
-
     //Get/init the doc
     let doc  = this.props.doc || CodeMirror.Doc(initialValue);
+
+    let hintOptions = this.props.hintOptions || {};
+    let extraKeys   = this.props.extraKeys || {};
 
     //Create and save a CodeMirror editor
     this.codeMirror = CodeMirror(this.refs.editor, {
       value: doc,
-      mode:  mode
+      mode: mode,
+      extraKeys: extraKeys,
+      hintOptions: hintOptions,
     });
 
-    // this.codeMirror.setOption("mode", mode);
+    this.codeMirror.setOption("mode", mode);
 
     //Bind defined properties
     if(this.props.onChange) {
       this.codeMirror.on('change', this.props.onChange);
     }
-    
-  
   }
 
   render() {
@@ -50,6 +51,8 @@ class EditorComponent extends React.Component {
 EditorComponent.propTypes = { 
     onChange: React.PropTypes.func,
     doc: React.PropTypes.object,
+    hintOptions: React.PropTypes.object,
+    extraKeys: React.PropTypes.object,
     initialContent: React.PropTypes.string,
     mode: React.PropTypes.string,
 }

@@ -1,7 +1,6 @@
-var index = require('file?name=[name].[ext]!../assets/index.html')
-var index = require('file?name=[name].[ext]!../assets/styles.css')
-var index = require('file?name=[name].[ext]!katex/dist/katex.min.css')
-var index = require('file?name=[name].[ext]!codemirror/lib/codemirror.css')
+require('file?name=[name].[ext]!../assets/index.html')
+require('file?name=[name].[ext]!../assets/styles.css')
+require('file?name=[name].[ext]!codemirror/addon/hint/show-hint.css')
 
 
 import React from 'react';
