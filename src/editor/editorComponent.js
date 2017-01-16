@@ -14,6 +14,7 @@ class EditorComponent extends React.Component {
   }
 
   componentDidMount() {
+
     //Get the initial string value
     let initialValue = this.props.initialContent || "";
     //Get/init the mode
@@ -24,7 +25,9 @@ class EditorComponent extends React.Component {
     let hintOptions = this.props.hintOptions || {};
     let extraKeys   = this.props.extraKeys || {};
 
-    //Create and save a CodeMirror editor
+    //Replace default commands by user defined commands
+    CodeMirror.commands = Object.assign(CodeMirror.commands, this.props.commands);
+    
     this.codeMirror = CodeMirror(this.refs.editor, {
       value: doc,
       mode: mode,
@@ -50,6 +53,7 @@ class EditorComponent extends React.Component {
 
 EditorComponent.propTypes = { 
     onChange: React.PropTypes.func,
+    commands: React.PropTypes.object,
     doc: React.PropTypes.object,
     hintOptions: React.PropTypes.object,
     extraKeys: React.PropTypes.object,
