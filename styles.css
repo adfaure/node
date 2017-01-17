@@ -1,11 +1,16 @@
-.RichEditor-editor {
-  background: #fff;
-  border: 1px solid #ddd;
-  font-family: 'Georgia', serif;
-  font-size: 14px;
-  padding: 15px;
+body {
+ background-color: #DCDCDC
 }
 
+.CodeMirror {
+  background: #fff;
+  border: 1px solid #ddd;
+  margin-left: auto;
+  margin-right: auto;
+  height: auto;
+  width: 69em; /* largeur obligatoire pour être centré */
+  box-shadow: 5px 5px 5px #888888;
+}
 .displayNone {
   display: none !important;
 }
