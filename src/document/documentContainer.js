@@ -12,7 +12,7 @@ let initialDocument = {
 }
 
 class Document extends React.Component {
-  
+
   constructor(props) {
     super(props);
 
@@ -20,8 +20,7 @@ class Document extends React.Component {
     this.state = {
       document: document
     }
-    
-  
+
   }
 
   pushSectionBack(section) {
@@ -34,7 +33,6 @@ class Document extends React.Component {
       document: this.state.document
     });
     localStorage.setItem('editorState', JSON.stringify(this.state.document));
-    console.log(this.state);
   }
 
   render() {
