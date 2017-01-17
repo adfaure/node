@@ -1,7 +1,7 @@
 import React from 'react';
 import CodeMirror from 'codemirror';
 
-import { SectionContainer } from './sectionContainer';
+import { SectionComponent } from './sectionComponent';
 
 class DocumentEditor extends React.Component {
 
@@ -14,7 +14,7 @@ class DocumentEditor extends React.Component {
       <div>
           {
             this.props.doc.sections.map((elem,idx) =>  {
-              return <SectionContainer key={idx} documentSection={elem} />
+              return <SectionComponent save={ (cm) => { this.props.saveSection(cm, idx); }} key={idx} documentSection={elem}/>
             })
           }
       </div>
@@ -25,6 +25,7 @@ class DocumentEditor extends React.Component {
 
 DocumentEditor.propTypes = { 
     doc: React.PropTypes.object,
+    saveSection: React.PropTypes.func.isRequired,
 }
 
 

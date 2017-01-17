@@ -10,9 +10,16 @@ class SectionComponent extends React.Component {
   }
 
   render() {
-    return (<CMEditor initialContent={this.props.documentSection.content} />)
+    return (<CMEditor initialContent={this.props.documentSection.content}  
+                      configuration={ {lineNumbers:true, viewportMargin:Infinity} }
+                      commands={{ save:(cm) => { this.props.save(cm) } }}
+            />)
   }
 
+}
+
+SectionComponent.propTypes = { 
+    save: React.PropTypes.func.isRequired,
 }
 
 module.exports.SectionComponent = SectionComponent;

@@ -3,10 +3,10 @@ import React from 'react';
 import {DocumentEditor} from './documentEditor';
 
 
-let document = {
+let initialDocument = {
   sections : [
     {
-      content: "yayayaya"
+      content: ""
     }
   ]
 }
@@ -16,18 +16,31 @@ class Document extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {}
-    this.state.document = document;
-
+    let document = JSON.parse(localStorage.getItem('editorState')) || initialDocument;
+    this.state = {
+      document: document
+    }
+    
+  
   }
 
   pushSectionBack(section) {
     this.props.document.sections.push(section);
   }
 
-  render() {
-    return <DocumentEditor doc={this.state.document}/>
+  saveSection(cm, idx) {
+    this.state.document.sections[idx].content = cm.doc.getValue();
+    this.setState({
+      document: this.state.document
+    });
+    localStorage.setItem('editorState', JSON.stringify(this.state.document));
+    console.log(this.state);
   }
+
+  render() {
+    return <DocumentEditor doc={this.state.document} saveSection={this.saveSection.bind(this)}/>
+  }
+
 }
 
 module.exports.Document = Document;
