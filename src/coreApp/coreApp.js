@@ -5,6 +5,10 @@ import { Document } from './../document'
 
 import LogginComponent  from './loggin'
 
+import RaisedButton from 'material-ui/RaisedButton';
+import AppBar from 'material-ui/AppBar';
+import Paper from 'material-ui/Paper';
+
 const mapStateToProps = (state) => {
   return {
     credentials: state.credentials
@@ -30,6 +34,7 @@ class AppComponent extends React.Component {
     }
     return (
       <div>
+        <AppBar/>
         <Document />
       </div>
     );

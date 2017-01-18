@@ -12,12 +12,12 @@ import thunkMiddleware from 'redux-thunk'
 import { App } from './coreApp';
 
 import Github from './github';
-
-// let git = new Github({ username: 'adfaure', token: '481514a0708917a6387ed4bbf15d1970c02d8f24'});
-// git.getRepo('adfaure', 'node').then((res) => {
-//   console.log(res)
-//   console.log(atob(res.content));
-// });
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
+ 
+// Needed for onTouchTap 
+// http://stackoverflow.com/a/34015469/988941 
+injectTapEventPlugin();
 
 let store = createStore(function reducer(state = { credentials: null }, action) {
   switch (action.type) {
@@ -28,9 +28,16 @@ let store = createStore(function reducer(state = { credentials: null }, action) 
   }
 }, applyMiddleware(thunkMiddleware));
 
+
+const ReactApp = () => (
+  <MuiThemeProvider>
+    <App />
+  </MuiThemeProvider>
+)
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ReactApp />
   </Provider>,
   document.getElementById('app')
 );

@@ -7,13 +7,13 @@ body {
   border: 1px solid #ddd;
   margin-left: auto;
   margin-right: auto;
+  margin-top: 1em;
   height: auto;
-  width: 69em; /* largeur obligatoire pour être centré */
-  box-shadow: 5px 5px 5px #888888;
+  width: 69vw; /* largeur obligatoire pour être centré */
 }
 
 .CodeMirror-scroll {
-  min-height: 300px;
+  min-height: 89vh;
 }
 
 .displayNone {
