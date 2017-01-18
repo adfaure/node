@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {DocumentEditor} from './documentEditor';
-
+import Github from './../github';
 
 let initialDocument = {
   sections : [
@@ -12,14 +12,28 @@ let initialDocument = {
 }
 
 class Document extends React.Component {
-
+  
   constructor(props) {
     super(props);
-
-    let document = JSON.parse(localStorage.getItem('editorState')) || initialDocument;
+    let self = this;
+    let document = initialDocument;
     this.state = {
       document: document
     }
+    
+    let git = new Github();
+
+    git.getFile('adfaure', 'remote-simgrid', 'README.md').then((res) => {
+
+      let document = {
+        sections : [
+          {
+            content: atob(res.content)
+          }
+        ]
+      }
+      self.setState({document:document});
+    });
 
   }
 
@@ -29,14 +43,11 @@ class Document extends React.Component {
 
   saveSection(cm, idx) {
     this.state.document.sections[idx].content = cm.doc.getValue();
-    this.setState({
-      document: this.state.document
-    });
     localStorage.setItem('editorState', JSON.stringify(this.state.document));
   }
 
   render() {
-    return <DocumentEditor doc={this.state.document} saveSection={this.saveSection.bind(this)}/>
+    return <DocumentEditor doc={this.state.document} saveSection={this.saveSection.bind(this)} />
   }
 
 }

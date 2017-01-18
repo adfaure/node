@@ -11,24 +11,37 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+  
   return {
-    setCredentials: function(event) {
-      dispatch({
-        type: 'SET_CREDENTIALS',
-        cred: {
-          name: this.refs.name.value,
-          token: this.refs.token.value
-        }
-      });
+
+    setCredentials: function(cred) {
+      dispatch(function(dispatch) {
+        localStorage.setItem('credentials', JSON.stringify(cred));
+        dispatch({
+          type: 'SET_CREDENTIALS',
+          cred
+        });
+      })
     }
   }
+
 }
 
-class LogginComponent extends React.Component {
 
+class LogginComponent extends React.Component {
+  
   constructor(props) {
     super(props);
-    console.log(props);
+    var rawCred = localStorage.getItem('credentials');
+    this.props.setCredentials(JSON.parse(rawCred));
+  }
+
+  onClickButton(event) {
+    let cred = {
+      token: this.refs.token.value,
+      name: this.refs.name.value
+    };
+    this.props.setCredentials(cred);
   }
 
   render() {
@@ -40,11 +53,9 @@ class LogginComponent extends React.Component {
         <div>
           <input type="text" ref="token"/>
         </div>
-        <div>
-          <button onClick={this.props.setCredentials.bind(this)}> 
-            Connection
-          </button>
-        </div>
+          <div>
+            <button onClick={this.onClickButton.bind(this)}> Connection </button>
+          </div>
       </div>
     );
   }

@@ -30,7 +30,6 @@ class AppComponent extends React.Component {
     }
     return (
       <div>
-        Welcome {this.props.credentials.name} !
         <Document />
       </div>
     );

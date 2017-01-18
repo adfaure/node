@@ -11,6 +11,11 @@ body {
   width: 69em; /* largeur obligatoire pour être centré */
   box-shadow: 5px 5px 5px #888888;
 }
+
+.CodeMirror-scroll {
+  min-height: 300px;
+}
+
 .displayNone {
   display: none !important;
 }

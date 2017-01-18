@@ -45,6 +45,10 @@ class EditorComponent extends React.Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.codeMirror.setValue(nextProps.initialContent);
+  }
+
   render() {
     return (
       <div ref="editor"></div>

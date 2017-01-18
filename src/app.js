@@ -11,6 +11,13 @@ import thunkMiddleware from 'redux-thunk'
 
 import { App } from './coreApp';
 
+import Github from './github';
+
+// let git = new Github({ username: 'adfaure', token: '481514a0708917a6387ed4bbf15d1970c02d8f24'});
+// git.getRepo('adfaure', 'node').then((res) => {
+//   console.log(res)
+//   console.log(atob(res.content));
+// });
 
 let store = createStore(function reducer(state = { credentials: null }, action) {
   switch (action.type) {
@@ -27,31 +34,3 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('app')
 );
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-const popsicle = require('popsicle')
-// popsicle.get({
-//   url: "https://api.github.com/repos/adfaure/node",
-//   headers: {
-//     "Authorization": " Basic " + btoa("adfaure:--pat-token--")
-//   }
-// }).then((res) => {
-//   console.log(res)
-//   if(res.code != 200) {
-//   }
-// })
