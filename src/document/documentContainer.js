@@ -9,7 +9,7 @@ let initialDocument = {
       content: ""
     }
   ]
-}
+};
 
 class Document extends React.Component {
   
@@ -20,10 +20,10 @@ class Document extends React.Component {
     this.state = {
       document: document
     }
-    
-    let git = new Github();
+    let cred = JSON.parse(localStorage.getItem('credentials'));
+    let git = new Github({cred});
 
-    git.getFile('adfaure', 'remote-simgrid', 'README.md').then((res) => {
+    git.getFile('adfaure', 'notes', 'README.md').then((res) => {
 
       let document = {
         sections : [

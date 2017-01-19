@@ -37,7 +37,7 @@ class LogginComponent extends React.Component {
     var rawCred = localStorage.getItem('credentials');
     this.props.setCredentials(JSON.parse(rawCred));
     this.state = {
-      name : "",
+      username : "",
       token : ""
     }
   }
@@ -45,7 +45,7 @@ class LogginComponent extends React.Component {
   onClickButton(event) {
     let cred = {
       token: this.state.token,
-      name: this.state.name
+      username: this.state.name
     };
     this.props.setCredentials(cred);
   }

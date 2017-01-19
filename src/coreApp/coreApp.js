@@ -26,17 +26,17 @@ class AppComponent extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
   }
 
   render() {
+
     if(!this.props.credentials) {
       return <LogginComponent />;
     }
+
     return (
       <div>
-        <AppBar > 
-        </AppBar>
+        <AppBar ></AppBar>
         <Document />
       </div>
     );
