@@ -17,9 +17,11 @@ class Document extends React.Component {
     super(props);
     let self = this;
     let document = initialDocument;
+
     this.state = {
       document: document
     }
+
     let cred = JSON.parse(localStorage.getItem('credentials'));
     let git = new Github({cred});
 

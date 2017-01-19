@@ -45,7 +45,7 @@ class LogginComponent extends React.Component {
   onClickButton(event) {
     let cred = {
       token: this.state.token,
-      username: this.state.name
+      username: this.state.username
     };
     this.props.setCredentials(cred);
   }
@@ -56,7 +56,7 @@ class LogginComponent extends React.Component {
         <div id="loggin-content">
           <Paper zDepth={3} style={{ padding:'1em', width:'50%', 'marginLeft':'auto', 'marginRight':'auto' }}>
             <div>
-              <TextField floatingLabelText="Account name" hintText="You name" name="name" value={this.state.name}  onChange={(e,value) => { this.setState({name:value})}} style={{ width:'100%', 'marginLeft':'auto', 'marginRight':'auto' }}/>
+              <TextField floatingLabelText="Account name" hintText="You name" name="username" value={this.state.username}  onChange={(e,value) => { this.setState({username:value})} } style={{ width:'100%', 'marginLeft':'auto', 'marginRight':'auto' }}/>
             </div>
             <div>
               <TextField floatingLabelText="Password or token" type="password" hintText="Your token/password" name="token" value={this.state.token}  onChange={(e,value) => { this.setState({token:value})}}  style={{ width:'100%', 'marginLeft':'auto', 'marginRight':'auto' }}/>
