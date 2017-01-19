@@ -4,6 +4,7 @@ import { connect } from 'react-redux'
 import { Document } from './../document'
 
 import LogginComponent  from './loggin'
+import TextField from 'material-ui/TextField';
 
 import RaisedButton from 'material-ui/RaisedButton';
 import AppBar from 'material-ui/AppBar';
@@ -34,7 +35,8 @@ class AppComponent extends React.Component {
     }
     return (
       <div>
-        <AppBar/>
+        <AppBar > 
+        </AppBar>
         <Document />
       </div>
     );

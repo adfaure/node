@@ -1,8 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux'
-
 import { Document } from './../document'
 
+import Paper from 'material-ui/Paper';
+import TextField from 'material-ui/TextField';
+import FlatButton from 'material-ui/FlatButton';
 
 const mapStateToProps = (state) => {
   return {
@@ -34,28 +36,36 @@ class LogginComponent extends React.Component {
     super(props);
     var rawCred = localStorage.getItem('credentials');
     this.props.setCredentials(JSON.parse(rawCred));
+    this.state = {
+      name : "",
+      token : ""
+    }
   }
 
   onClickButton(event) {
     let cred = {
-      token: this.refs.token.value,
-      name: this.refs.name.value
+      token: this.state.token,
+      name: this.state.name
     };
     this.props.setCredentials(cred);
   }
 
   render() {
     return (
-      <div>
-        <div>
-          <input type="text" ref="name"/>
+      <div id="loggin-wrapper">
+        <div id="loggin-content">
+          <Paper zDepth={3} style={{ padding:'1em', width:'50%', 'marginLeft':'auto', 'marginRight':'auto' }}>
+            <div>
+              <TextField floatingLabelText="Account name" hintText="You name" name="name" value={this.state.name}  onChange={(e,value) => { this.setState({name:value})}} style={{ width:'100%', 'marginLeft':'auto', 'marginRight':'auto' }}/>
+            </div>
+            <div>
+              <TextField floatingLabelText="Password or token" type="password" hintText="Your token/password" name="token" value={this.state.token}  onChange={(e,value) => { this.setState({token:value})}}  style={{ width:'100%', 'marginLeft':'auto', 'marginRight':'auto' }}/>
+            </div>
+            <div className="centered" >
+              <FlatButton style={{width:'100%'}} primary={true} onClick={this.onClickButton.bind(this)}> Connection </FlatButton>
+            </div>
+          </Paper>
         </div>
-        <div>
-          <input type="text" ref="token"/>
-        </div>
-          <div>
-            <button onClick={this.onClickButton.bind(this)}> Connection </button>
-          </div>
       </div>
     );
   }
