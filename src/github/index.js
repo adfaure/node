@@ -1,5 +1,6 @@
 const popsicle = require('popsicle')
 const SHA1   = require("crypto-js/sha1");
+const Base64   = require('js-base64').Base64;
 
 const GITHUB_API_URL = "https://api.github.com/";
 
@@ -11,7 +12,7 @@ export default class Github {
 
   doAuthRequest(request) {
     let headers = {};
-    if(this.props.cred.token && this.props.cred.username) {
+    if(this.props.cred && this.props.cred.token && this.props.cred.username) {
       headers = {
         "Authorization": " Basic " + btoa(this.props.cred.username+":"+this.props.cred.token)
       };
@@ -38,11 +39,21 @@ export default class Github {
     return this.doAuthRequest({
       url: GITHUB_API_URL + "repos/"+username+"/"+repo+"/contents/"+filename,
       method: 'GET'
+    }).then( (res) => {
+      res.content = Base64.decode(res.content);
+      return res;
+    });
+  }
+
+  getUser(username) {
+    return this.doAuthRequest({
+      url: GITHUB_API_URL + "users/"+username,
+      method: 'GET'
     })
   }
 
   updateFile(repo, file, content) {
-    let blob = btoa(content);
+    let blob = Base64.encode(content);
     let body = {
       content: blob,
       sha: file.sha,

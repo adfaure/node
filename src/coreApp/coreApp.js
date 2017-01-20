@@ -17,23 +17,21 @@ import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 
+import {setCredentials, disconnect} from './actions';
+
 const mapStateToProps = (state) => {
   return {
-    credentials: state.credentials
+    credentials: state.credentials,
+    username: state.username,
+    project: state.project
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    setCredentials: function(cred) {
-      dispatch(function(dispatch) {
-        localStorage.removeItem('credentials');
-        dispatch({
-          type: 'SET_CREDENTIALS',
-          cred: null
-        });
-      })
-    }
+    disconnectProp: () => {
+      dispatch(disconnect());
+    } 
   }
 }
 
@@ -56,7 +54,7 @@ class AppComponent extends React.Component {
   }
   
   disconnect() {
-    this.props.setCredentials({});
+    this.props.disconnectProp();
   }
 
   render() {
@@ -67,7 +65,8 @@ class AppComponent extends React.Component {
 
     return (
       <div>
-        <AppBar 
+        <AppBar
+          title={this.props.username + " - " + this.props.project}
           iconElementRight={<ConfigurationMenu disconnect={this.disconnect.bind(this)} />}>
         </AppBar>
         <Document />

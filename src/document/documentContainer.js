@@ -26,12 +26,11 @@ class Document extends React.Component {
     this.git = new Github({cred});
 
     this.git.getFile('adfaure', 'notes', 'README.md').then((res) => {
-      console.log(res)
       self.file = res;
       let document = {
         sections : [
           {
-            content: atob(res.content)
+            content: res.content
           }
         ]
       }
@@ -45,9 +44,13 @@ class Document extends React.Component {
   }
 
   saveSection(cm, idx) {
+    let self = this;
     this.state.document.sections[idx].content = cm.doc.getValue();
     localStorage.setItem('editorState', JSON.stringify(this.state.document));
-    this.git.updateFile('notes', this.file, this.state.document.sections[idx].content);
+    this.git.updateFile('notes', this.file, this.state.document.sections[idx].content).then((res) => {
+      console.log(res);
+      self.file = res.content;
+    });
   }
 
   render() {
