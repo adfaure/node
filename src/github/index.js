@@ -1,4 +1,5 @@
 const popsicle = require('popsicle')
+const SHA1   = require("crypto-js/sha1");
 
 const GITHUB_API_URL = "https://api.github.com/";
 
@@ -40,4 +41,19 @@ export default class Github {
     })
   }
 
+  updateFile(repo, file, content) {
+    let blob = btoa(content);
+    let body = {
+      content: blob,
+      sha: file.sha,
+      path: file.path,
+      message: "update " + file.path
+    };
+
+    return this.doAuthRequest({
+      url: GITHUB_API_URL + "repos/"+this.props.cred.username+"/"+repo+"/contents/"+file.path,
+      method: 'PUT',
+      body
+    });
+  }
 }
