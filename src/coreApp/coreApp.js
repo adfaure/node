@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux'
 
 import { Document } from './../document'
+import Github from './../github';
 
 import LogginComponent  from './loggin'
 import TextField from 'material-ui/TextField';
@@ -31,7 +32,7 @@ const mapDispatchToProps = (dispatch) => {
   return {
     disconnectProp: () => {
       dispatch(disconnect());
-    } 
+    }
   }
 }
 
@@ -52,9 +53,10 @@ class AppComponent extends React.Component {
   constructor(props) {
     super(props);
   }
-  
+
   disconnect() {
     this.props.disconnectProp();
+    this.git = null;
   }
 
   render() {
@@ -62,6 +64,8 @@ class AppComponent extends React.Component {
     if(!this.props.credentials) {
       return <LogginComponent />;
     }
+    if(!this.git)
+      this.git = new Github({cred: this.props.credentials});
 
     return (
       <div>
@@ -69,7 +73,7 @@ class AppComponent extends React.Component {
           title={this.props.username + " - " + this.props.project}
           iconElementRight={<ConfigurationMenu disconnect={this.disconnect.bind(this)} />}>
         </AppBar>
-        <Document />
+        <Document gitConnection={this.git} username={this.props.credentials.username} filename="README.md" repo={this.props.project} />
       </div>
     );
   }

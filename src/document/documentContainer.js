@@ -12,20 +12,16 @@ let initialDocument = {
 };
 
 class Document extends React.Component {
-  
+
   constructor(props) {
     super(props);
     let self = this;
     let document = initialDocument;
-
     this.state = {
       document: document
     }
 
-    let cred = JSON.parse(localStorage.getItem('credentials'));
-    this.git = new Github({cred});
-
-    this.git.getFile('adfaure', 'notes', 'README.md').then((res) => {
+    this.props.gitConnection.getFile(this.props.username, this.props.repo, this.props.filename).then((res) => {
       self.file = res;
       let document = {
         sections : [
@@ -46,9 +42,7 @@ class Document extends React.Component {
   saveSection(cm, idx) {
     let self = this;
     this.state.document.sections[idx].content = cm.doc.getValue();
-    localStorage.setItem('editorState', JSON.stringify(this.state.document));
-    this.git.updateFile('notes', this.file, this.state.document.sections[idx].content).then((res) => {
-      console.log(res);
+    this.props.gitConnection.updateFile(this.props.repo, this.file, this.state.document.sections[idx].content).then((res) => {
       self.file = res.content;
     });
   }
@@ -58,5 +52,14 @@ class Document extends React.Component {
   }
 
 }
+
+
+Document.propTypes = {
+    username: React.PropTypes.string,
+    repo: React.PropTypes.string,
+    filename: React.PropTypes.string,
+    gitConnection: React.PropTypes.object,
+}
+
 
 module.exports.Document = Document;
