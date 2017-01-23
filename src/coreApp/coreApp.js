@@ -1,12 +1,13 @@
 import React from 'react';
 import { connect } from 'react-redux'
 
-import { Document } from './../document'
 import Github from './../github';
+import {Editor} from './../notesEditor';
 
 import LogginComponent  from './loggin'
-import TextField from 'material-ui/TextField';
+import {setCredentials, disconnect} from './actions';
 
+import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import AppBar from 'material-ui/AppBar';
 import Paper from 'material-ui/Paper';
@@ -17,8 +18,22 @@ import FlatButton from 'material-ui/FlatButton';
 import Toggle from 'material-ui/Toggle';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
+import Subheader from 'material-ui/Subheader';
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {Tabs, Tab} from 'material-ui/Tabs';
 
-import {setCredentials, disconnect} from './actions';
+const styles = {
+  headline: {
+    fontSize: 24,
+    paddingTop: 16,
+    marginBottom: 12,
+    fontWeight: 400,
+  },
+};
+
+function handleActive(tab) {
+  alert(`A tab with this route property ${tab.props['data-route']} was activated.`);
+}
 
 const mapStateToProps = (state) => {
   return {
@@ -64,6 +79,7 @@ class AppComponent extends React.Component {
     if(!this.props.credentials) {
       return <LogginComponent />;
     }
+
     if(!this.git)
       this.git = new Github({cred: this.props.credentials});
 
@@ -73,7 +89,9 @@ class AppComponent extends React.Component {
           title={this.props.username + " - " + this.props.project}
           iconElementRight={<ConfigurationMenu disconnect={this.disconnect.bind(this)} />}>
         </AppBar>
-        <Document gitConnection={this.git} username={this.props.credentials.username} filename="README.md" repo={this.props.project} />
+        <div>
+          <Editor credentials={this.props.credentials} git={this.git} project={this.props.project}/>
+        </div>
       </div>
     );
   }

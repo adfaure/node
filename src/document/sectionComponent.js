@@ -1,7 +1,7 @@
 import React from 'react';
 import CodeMirror from 'codemirror';
 
-import { CMEditor } from './../editor/editorComponent';
+import { CMEditor } from './../codeMirror/editorComponent';
 
 class SectionComponent extends React.Component {
 
@@ -12,7 +12,9 @@ class SectionComponent extends React.Component {
   render() {
     return (<CMEditor initialContent={this.props.documentSection.content}  
                       configuration={ {lineNumbers:true, viewportMargin:Infinity} }
-                      commands={{ save:(cm) => { this.props.save(cm) } }}
+                      extraKeys={
+                            { 'Ctrl-S':(cm) => { this.props.save(cm) } }
+                      }
                       mode="javascript"
             />)
   }

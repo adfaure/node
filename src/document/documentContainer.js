@@ -18,11 +18,12 @@ class Document extends React.Component {
     let self = this;
     let document = initialDocument;
     this.state = {
-      document: document
+      document: document,
+      file :null
     }
 
     this.props.gitConnection.getFile(this.props.username, this.props.repo, this.props.filename).then((res) => {
-      self.file = res;
+      self.setState({file: res});
       let document = {
         sections : [
           {
@@ -42,8 +43,8 @@ class Document extends React.Component {
   saveSection(cm, idx) {
     let self = this;
     this.state.document.sections[idx].content = cm.doc.getValue();
-    this.props.gitConnection.updateFile(this.props.repo, this.file, this.state.document.sections[idx].content).then((res) => {
-      self.file = res.content;
+    this.props.gitConnection.updateFile(this.props.repo, this.state.file, this.state.document.sections[idx].content).then((res) => {
+      self.setState({file: res.content});
     });
   }
 
