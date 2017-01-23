@@ -12,14 +12,18 @@ class Editor extends React.Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      currentTab :0
+    }
   }
 
   render() {
-    let leaves = files.map((elem, idx) => { return <ListItem primaryText={elem} key={idx} /> });
+    let self = this;
+    let leaves = files.map((elem, idx) => { return <ListItem onClick={(e) => { self.setState({currentTab: idx}) }} primaryText={elem} key={idx} /> });
     let tree = <List> {leaves} </List>;
 
     let tabs = files.map((elem, idx) => {
-                return (<Tab key={idx}label={elem}>
+                return (<Tab value={idx} key={idx} label={elem}>
                           <Document gitConnection={this.props.git} username={this.props.credentials.username} filename={elem} repo={this.props.project} />
                         </Tab>)
                 });
@@ -34,7 +38,7 @@ class Editor extends React.Component {
             </div>
             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                 <div className="box">
-                  <Tabs>
+                  <Tabs value={this.state.currentTab}>
                       {tabs}
                   </Tabs>
                 </div>

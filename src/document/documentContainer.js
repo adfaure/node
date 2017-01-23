@@ -54,7 +54,6 @@ class Document extends React.Component {
 
 }
 
-
 Document.propTypes = {
     username: React.PropTypes.string,
     repo: React.PropTypes.string,
