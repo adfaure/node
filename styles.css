@@ -9,7 +9,6 @@ body {
   margin-right: auto;
   margin-top: 1em;
   height: auto;
-  width: 69vw; /* largeur obligatoire pour être centré */
 }
 
 .CodeMirror-scroll {
