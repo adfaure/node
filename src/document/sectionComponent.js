@@ -10,13 +10,13 @@ class SectionComponent extends React.Component {
   }
 
   render() {
-    return (<CMEditor initialContent={this.props.documentSection.content}  
+    return ( <CMEditor initialContent={this.props.documentSection.content}  
                       configuration={ {lineNumbers:true, viewportMargin:Infinity} }
                       extraKeys={
                             { 'Ctrl-S':(cm) => { this.props.save(cm) } }
                       }
                       mode="javascript"
-            />)
+             />)
   }
 
 }

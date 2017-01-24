@@ -19,30 +19,60 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      currentTab :0,
+      currentTab : null,
 
       files: [
         {
           name: 'notes.md',
-          open: false
+          open: false,
+          doc: null
         }, 
         {
           name: 'README.md',
-          open: true
+          open: true,
+          doc: null
         }
       ]
     }
 
   }
 
+  componentDidMount() {
+
+    let update = false;
+    this.state.files.forEach((elem) => {
+      if(elem.open) {
+        elem.doc = <Document key={elem.name} gitConnection={this.props.git} username={this.props.credentials.username} filename={elem.name} repo={this.props.project} />
+        update = true;
+      }
+    });
+
+    if (update) {
+      this.setState({ files: this.state.files })
+    }
+  }
+
+  handleChange(value) {
+    this.setState({
+      currentTab: value
+    });
+  };
+
   closeFile(elem) {
     elem.open = false;
+    elem.doc = null;
     this.setState({files: this.state.files})
   }
 
   openFile(elem) {
     elem.open = true;
-    this.setState({files: this.state.files})
+    elem.doc  = <Document key={elem.name} gitConnection={this.props.git} username={this.props.credentials.username} filename={elem.name} repo={this.props.project} />
+
+    this.setState({
+                    files: this.state.files,
+                    currentTab: elem.name
+                  })
+
   }
 
   render() {
@@ -50,29 +80,30 @@ class Editor extends React.Component {
     let openFiles = this.state.files.filter(elem => elem.open).map((elem, idx) => { 
       return <ListItem
                 rightIconButton={<IconButton onClick={() => {self.closeFile(elem)}}><ActionClose /></IconButton>}  
-                onClick={(e) => { self.setState({currentTab: idx}) }} 
+                onClick={(e) => { self.setState({currentTab: elem.name}) }} 
                 primaryText={elem.name} key={idx} /> 
     });
 
     let availableFiles = this.state.files.filter(elem => !elem.open).map((elem, idx) => { 
       return <ListItem 
-                onClick={(e) => { self.openFile(elem) } }
+                onClick={(e) => { console.log("clicked,", elem); self.openFile(elem) } }
                 primaryText={elem.name} key={idx} />
     });
 
     availableFiles.push( <ListItem key={-1} primaryText="Add a note" rightIconButton={ <IconButton> <ActionNoteAdd /> </IconButton>}/> )
 
     let tree = (<div>
-        <Subheader>Opened notes</Subheader>
-        <List> {openFiles} </List>
-        <Divider /> 
-        <Subheader>Available notes</Subheader>
-        <List> {availableFiles} </List>
-        </div>);
+                  <Subheader>Opened notes</Subheader>
+                  <List> {openFiles} </List>
+                  <Divider /> 
+                  <Subheader>Available notes</Subheader>
+                  <List> {availableFiles} </List>
+                </div>);
 
-    let tabs = this.state.files.filter(elem => elem.open).map((elem, idx) => {
-                return (<Tab value={idx} key={idx} label={elem.name}>
-                          <Document gitConnection={this.props.git} username={this.props.credentials.username} filename={elem.name} repo={this.props.project} />
+    let tabs = this.state.files.filter(elem => elem.open).map((elem, idx) => {  
+                console.log('create doc for ', elem.name)
+                return (<Tab value={elem.name} key={idx} label={elem.name}>
+                          {elem.doc}
                         </Tab>)
                 });
 
@@ -87,7 +118,7 @@ class Editor extends React.Component {
             </div>
             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                 <div className="box">
-                  <Tabs value={this.state.currentTab}>
+                  <Tabs onChange={e => this.handleChange(e) } value={this.state.currentTab}>
                       {tabs}
                   </Tabs>
                 </div>

@@ -3,25 +3,27 @@ import React from 'react';
 import {DocumentEditor} from './documentEditor';
 import Github from './../github';
 
-let initialDocument = {
-  sections : [
-    {
-      content: ""
-    }
-  ]
-};
-
 class Document extends React.Component {
 
   constructor(props) {
     super(props);
+    console.log("Document pops", props)
     let self = this;
-    let document = initialDocument;
+    let document = {
+      sections : [
+        {
+          content: ""
+        }
+      ]
+    };
     this.state = {
       document: document,
       file :null
     }
+  }
 
+  componentDidMount() {
+    var self = this;
     this.props.gitConnection.getFile(this.props.username, this.props.repo, this.props.filename).then((res) => {
       self.setState({file: res});
       let document = {
@@ -33,7 +35,6 @@ class Document extends React.Component {
       }
       self.setState({document:document});
     });
-
   }
 
   pushSectionBack(section) {
@@ -49,7 +50,7 @@ class Document extends React.Component {
   }
 
   render() {
-    return <DocumentEditor doc={this.state.document} saveSection={this.saveSection.bind(this)} />
+    return <DocumentEditor doc={this.state.document} saveSection={this.saveSection.bind(this)} /> 
   }
 
 }
