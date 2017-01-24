@@ -564,7 +564,6 @@ webpackJsonp([0],[
 	  }, {
 	    key: 'updateFile',
 	    value: function updateFile(repo, file, content) {
-	      console.log(file);
 	      var blob = Base64.encode(content);
 	      var body = {
 	        content: blob,
@@ -6371,7 +6370,7 @@ webpackJsonp([0],[
 	      }).map(function (elem, idx) {
 	        return _react2.default.createElement(_List.ListItem, {
 	          onClick: function onClick(e) {
-	            console.log("clicked,", elem);self.openFile(elem);
+	            self.openFile(elem);
 	          },
 	          primaryText: elem.name, key: idx });
 	      });
@@ -6417,7 +6416,6 @@ webpackJsonp([0],[
 	      var tabs = this.state.files.filter(function (elem) {
 	        return elem.open;
 	      }).map(function (elem, idx) {
-	        console.log('create doc for ', elem.name);
 	        return _react2.default.createElement(
 	          _Tabs.Tab,
 	          { value: elem.name, key: idx, label: elem.name },
@@ -6509,7 +6507,6 @@ webpackJsonp([0],[
 
 	    var _this = _possibleConstructorReturn(this, (Document.__proto__ || Object.getPrototypeOf(Document)).call(this, props));
 
-	    console.log("Document pops", props);
 	    var self = _this;
 	    var document = {
 	      sections: [{
@@ -31968,7 +31965,6 @@ webpackJsonp([0],[
 
 	    var git = new _github2.default();
 	    git.getUser(cred.username).then(function (user) {
-	      console.log(user);
 	      if (user) {
 	        dispatch(setName(user.name));
 	      } else {
