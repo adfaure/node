@@ -16,7 +16,6 @@ import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
-var lazy = 0;
 
 class Editor extends React.Component {
 
@@ -55,7 +54,7 @@ class Editor extends React.Component {
     let filename = this.state.newNoteName;
     this.props.git.createFile(this.props.project, filename, "", "Create " + filename ).then( (res) => {
       self.state.files.push({ name: res.content.name, open: false, doc:null });
-      self.setState({files: files});
+      self.setState({files: self.state.files});
     });
   }
 
@@ -82,15 +81,15 @@ class Editor extends React.Component {
 
   render() {
     let self = this;
-    let openFiles = this.state.files.filter(elem => elem.open).map((elem, idx) => { 
+    let openFiles = this.state.files.filter(elem => elem.open).map((elem, idx) => {
       return <ListItem
-                rightIconButton={<IconButton onClick={() => {self.closeFile(elem)}}><ActionClose /></IconButton>}  
-                onClick={(e) => { self.setState({currentTab: elem.name}) }} 
-                primaryText={elem.name} key={idx} /> 
+                rightIconButton={<IconButton onClick={() => {self.closeFile(elem)}}><ActionClose /></IconButton>}
+                onClick={(e) => { self.setState({currentTab: elem.name}) }}
+                primaryText={elem.name} key={idx} />
     });
 
-    let availableFiles = this.state.files.filter(elem => !elem.open).map((elem, idx) => { 
-      return <ListItem 
+    let availableFiles = this.state.files.filter(elem => !elem.open).map((elem, idx) => {
+      return <ListItem
                 onClick={(e) => { self.openFile(elem) }}
                 primaryText={elem.name} key={idx} />
     });
@@ -100,7 +99,7 @@ class Editor extends React.Component {
     let tree = (<div>
                   <Subheader>Opened notes</Subheader>
                   <List> {openFiles} </List>
-                  <Divider /> 
+                  <Divider />
                   <Subheader>Available notes</Subheader>
                   <List> {availableFiles} </List>
                 </div>);
@@ -145,7 +144,7 @@ class Editor extends React.Component {
         <Dialog title="Enter a name for the new note"
                 actions={actions}
                 modal={false}
-                open={this.state.showDialNewFile} > 
+                open={this.state.showDialNewFile} >
           <TextField hintText="Name of the new note" value={this.state.newNoteName}  onChange={(e,value) => { this.setState({newNoteName:value})} }/>
         </Dialog>
       </div>
