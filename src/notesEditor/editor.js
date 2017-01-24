@@ -24,7 +24,8 @@ class Editor extends React.Component {
     this.state = {
       currentTab : null,
       showDialNewFile: false,
-      files: []
+      files: [],
+      newNoteName: ""
     }
 
   }
@@ -59,7 +60,7 @@ class Editor extends React.Component {
   }
 
   closeDialog()  {
-    this.setState({showDialNewFile: false})
+    this.setState({showDialNewFile: false, newNoteName: ""})
   };
 
   closeFile(elem) {
