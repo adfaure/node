@@ -45,11 +45,37 @@ export default class Github {
     });
   }
 
+  getPath(username, repo, filename) {
+    return this.doAuthRequest({
+      url: GITHUB_API_URL + "repos/"+username+"/"+repo+"/contents"+filename,
+      method: 'GET'
+    }).then( (res) => {
+      res.content = Base64.decode(res.content);
+      return res;
+    });
+  }
+
   getUser(username) {
     return this.doAuthRequest({
       url: GITHUB_API_URL + "users/"+username,
       method: 'GET'
     })
+  }
+
+  createFile(repo, path, content, message) {
+    let blob = Base64.encode(content);
+
+    let body = {
+      content: blob,
+      message: "Create " + path
+    };
+
+    return this.doAuthRequest({
+      url: GITHUB_API_URL + "repos/"+this.props.cred.username+"/"+repo+"/contents/"+path,
+      method: 'PUT',
+      body
+    })
+
   }
 
   updateFile(repo, file, content) {
