@@ -7,7 +7,6 @@ class Document extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log("Document pops", props)
     let self = this;
     let document = {
       sections : [

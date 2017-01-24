@@ -53,7 +53,6 @@ export default class Github {
   }
 
   updateFile(repo, file, content) {
-    console.log(file)
     let blob = Base64.encode(content);
     let body = {
       content: blob,

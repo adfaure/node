@@ -86,7 +86,7 @@ class Editor extends React.Component {
 
     let availableFiles = this.state.files.filter(elem => !elem.open).map((elem, idx) => { 
       return <ListItem 
-                onClick={(e) => { console.log("clicked,", elem); self.openFile(elem) } }
+                onClick={(e) => { self.openFile(elem) }}
                 primaryText={elem.name} key={idx} />
     });
 
@@ -100,8 +100,7 @@ class Editor extends React.Component {
                   <List> {availableFiles} </List>
                 </div>);
 
-    let tabs = this.state.files.filter(elem => elem.open).map((elem, idx) => {  
-                console.log('create doc for ', elem.name)
+    let tabs = this.state.files.filter(elem => elem.open).map((elem, idx) => {
                 return (<Tab value={elem.name} key={idx} label={elem.name}>
                           {elem.doc}
                         </Tab>)

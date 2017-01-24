@@ -32,7 +32,6 @@ export function connectToProject(cred, repo) {
 
     let git = new Github();
     git.getUser(cred.username).then((user) => {
-      console.log(user);
       if(user) {
         dispatch(setName(user.name));
       } else {
