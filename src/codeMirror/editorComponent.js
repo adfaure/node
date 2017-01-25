@@ -43,10 +43,14 @@ class EditorComponent extends React.Component {
     if(this.props.onChange) {
       this.codeMirror.on('change', this.props.onChange);
     }
+
   }
 
   componentWillReceiveProps(nextProps) {
     this.codeMirror.setValue(nextProps.initialContent);
+    if(nextProps.cursor) {
+      this.codeMirror.setCursor(nextProps.cursor);
+    }
   }
 
   render() {

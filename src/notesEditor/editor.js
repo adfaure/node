@@ -143,11 +143,10 @@ class Editor extends React.Component {
                 </div>
             </div>
         </div>
-
         <Dialog title="Enter a name for the new note"
                 actions={actions}
                 modal={false}
-                open={this.state.showDialNewFile} >
+                open={this.state.showDialNewFile}>
           <TextField hintText="Name of the new note" value={this.state.newNoteName}  onChange={(e,value) => { this.setState({newNoteName:value})} }/>
         </Dialog>
       </div>
