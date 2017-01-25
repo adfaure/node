@@ -1,12 +1,12 @@
 import React from 'react';
 import { GitRemoteDocumentEditor } from './documentContainer'
+import TreeList from './treeList'
 
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {List, ListItem} from 'material-ui/List';
 
 import Divider from 'material-ui/Divider';
 import IconButton from 'material-ui/IconButton';
-import ActionNoteAdd from 'material-ui/svg-icons/action/note-add';
 import ActionClose from 'material-ui/svg-icons/navigation/close';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import IconMenu from 'material-ui/IconMenu';
@@ -84,67 +84,46 @@ class Editor extends React.Component {
   }
 
   render() {
-
     let self = this;
-    let openFiles = this.state.files.filter(elem => elem.open).map((elem, idx) => {
-      return <ListItem rightIconButton={<IconButton onClick={() => {self.closeFile(elem)}}><ActionClose /></IconButton>}
-                       onClick={(e) => { self.setState({currentTab: elem.name}) }}
-                       primaryText={elem.name} key={idx} />
-    });
-
-    let availableFiles = this.state.files.filter(elem => !elem.open).map((elem, idx) => {
-      return <ListItem onClick={(e) => { self.openFile(elem) }}
-                       primaryText={elem.name} key={idx} />
-    });
-
-    availableFiles.push( <ListItem key={-1} onClick={() => { this.setState({showDialNewFile: true}) }} primaryText="Add a note" rightIconButton={ <IconButton> <ActionNoteAdd /> </IconButton>}/> )
-
-    let tree = (<div>
-                  <Subheader>Opened notes</Subheader>
-                  <List> {openFiles} </List>
-                  <Divider />
-                  <Subheader>Available notes</Subheader>
-                  <List> {availableFiles} </List>
-                </div>);
-
-    let tabs = this.state.files.filter(elem => elem.open).map((elem, idx) => {
-                return (<Tab value={elem.name} key={idx} label={elem.name}>
-                          {elem.doc}
-                        </Tab>)
-                });
-
-    const actions = [
-      <FlatButton
-        label="Cancel"
-        primary={true}
-        onTouchTap={() => this.closeDialog()}
-      />,
-      <FlatButton
-        label="Submit"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={() => {this.createNewNote(), this.closeDialog()}}
-      />,
-    ];
-
     return (
       <div>
         <div className="row">
             <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
                 <div className="box">
-                    {tree}
+                  <TreeList  onClickAddNote={() => { this.setState({showDialNewFile: true}) }}
+                             onClickOpenItem={(e) => { self.setState({currentTab: e.name}) }}
+                             onClickCloseOpenItem={ (e) => { self.closeFile(e) }}
+                             onAvailableItem={(e) => { self.openFile(e) }}
+                             files={this.state.files} />
                 </div>
             </div>
             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                 <div className="box">
                   <Tabs onChange={e => this.handleChange(e) } value={this.state.currentTab}>
-                      {tabs}
+                  { this.state.files.filter(elem => elem.open).map((elem, idx) => {
+                                return (<Tab value={elem.name} key={idx} label={elem.name}>
+                                          {elem.doc}
+                                        </Tab>)
+                                }) }
                   </Tabs>
                 </div>
             </div>
         </div>
+
         <Dialog title="Enter a name for the new note"
-                actions={actions}
+                actions={[
+                  <FlatButton
+                    label="Cancel"
+                    primary={true}
+                    onTouchTap={() => this.closeDialog()}
+                  />,
+                  <FlatButton
+                    label="Submit"
+                    primary={true}
+                    keyboardFocused={true}
+                    onTouchTap={() => {this.createNewNote(), this.closeDialog()}}
+                  />,
+                ]}
                 modal={false}
                 open={this.state.showDialNewFile}>
           <TextField hintText="Name of the new note" value={this.state.newNoteName}  onChange={(e,value) => { this.setState({newNoteName:value})} }/>
