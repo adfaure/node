@@ -1,5 +1,6 @@
 require('file?name=[name].[ext]!../assets/index.html')
 require('file?name=[name].[ext]!../assets/styles.css')
+require('file?name=[name].[ext]!../assets/favicon.ico')
 require('file?name=[name].[ext]!codemirror/addon/hint/show-hint.css')
 
 

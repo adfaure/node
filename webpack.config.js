@@ -7,8 +7,7 @@ module.exports = {
                 'react-dom',
                 'react-redux', 
                 'redux',
-                'redux-thunk'
-                ]
+                'redux-thunk' ]
     },
     output: {
         path: './bin',

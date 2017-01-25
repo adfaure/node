@@ -44,7 +44,9 @@ class Document extends React.Component {
     let self = this;
     this.state.document.sections[idx].content = cm.doc.getValue();
     this.props.gitConnection.updateFile(this.props.repo, this.state.file, this.state.document.sections[idx].content).then((res) => {
-      self.setState({file: res.content});
+      //If we update the content, the selection will be reseted.
+      //The only thing we should do here is to check for errors.
+      // self.setState({file: res.content});
     });
   }
 

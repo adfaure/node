@@ -151,7 +151,6 @@ class Editor extends React.Component {
           <TextField hintText="Name of the new note" value={this.state.newNoteName}  onChange={(e,value) => { this.setState({newNoteName:value})} }/>
         </Dialog>
       </div>
-
     );
   }
 

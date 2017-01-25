@@ -15,7 +15,7 @@ class SectionComponent extends React.Component {
                       extraKeys={
                             { 'Ctrl-S':(cm) => { this.props.save(cm) } }
                       }
-                      mode="javascript"
+                      mode="markdown"
              />)
   }
 
