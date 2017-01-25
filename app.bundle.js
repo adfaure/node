@@ -39,6 +39,7 @@ webpackJsonp([0],[
 	__webpack_require__(535);
 	__webpack_require__(536);
 	__webpack_require__(537);
+	__webpack_require__(538);
 
 	// Needed for onTouchTap 
 	// http://stackoverflow.com/a/34015469/988941 
@@ -6623,7 +6624,9 @@ webpackJsonp([0],[
 	      var self = this;
 	      this.state.document.sections[idx].content = cm.doc.getValue();
 	      this.props.gitConnection.updateFile(this.props.repo, this.state.file, this.state.document.sections[idx].content).then(function (res) {
-	        self.setState({ file: res.content });
+	        //If we update the content, the selection will be reseted.
+	        //The only thing we should do here is to check for errors.
+	        // self.setState({file: res.content});
 	      });
 	    }
 	  }, {
@@ -15870,7 +15873,7 @@ webpackJsonp([0],[
 	        extraKeys: { 'Ctrl-S': function CtrlS(cm) {
 	            _this2.props.save(cm);
 	          } },
-	        mode: 'javascript'
+	        mode: 'markdown'
 	      });
 	    }
 	  }]);
@@ -42029,6 +42032,12 @@ webpackJsonp([0],[
 
 /***/ },
 /* 537 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__.p + "favicon.ico";
+
+/***/ },
+/* 538 */
 /***/ function(module, exports, __webpack_require__) {
 
 	module.exports = __webpack_require__.p + "show-hint.css";
