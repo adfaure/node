@@ -27,13 +27,12 @@ class Editor extends React.Component {
       files: [],
       newNoteName: ""
     }
-
   }
 
   componentDidMount() {
     let self = this;
 
-    this.props.git.getPath(this.props.credentials.username, this.props.project, "").then((res) => {
+    this.props.git.getPath(this.props.credentials.username, this.props.project, this.props.basePath).then((res) => {
       var files = res.map((elem) => {return {
         name: elem.name,
         open: false,
@@ -53,7 +52,7 @@ class Editor extends React.Component {
   createNewNote() {
     let self = this;
     let filename = this.state.newNoteName;
-    this.props.git.createFile(this.props.project, filename, "", "Create " + filename ).then( (res) => {
+    this.props.git.createFile(this.props.project, this.props.basePath+"/"+filename, "", "Create " + filename ).then( (res) => {
       self.state.files.push({ name: res.content.name, open: false, doc:null });
       self.setState({files: self.state.files});
     });
@@ -71,7 +70,11 @@ class Editor extends React.Component {
 
   openFile(elem) {
     elem.open = true;
-    elem.doc  = <Document key={elem.name} gitConnection={this.props.git} username={this.props.credentials.username} filename={elem.name} repo={this.props.project} />
+    elem.doc  = <Document key={elem.name} 
+                          gitConnection={this.props.git}
+                          username={this.props.credentials.username}
+                          filename={this.props.basePath + "/" + elem.name}
+                          repo={this.props.project} />
 
     this.setState({
                     files: this.state.files,
@@ -81,18 +84,17 @@ class Editor extends React.Component {
   }
 
   render() {
+
     let self = this;
     let openFiles = this.state.files.filter(elem => elem.open).map((elem, idx) => {
-      return <ListItem
-                rightIconButton={<IconButton onClick={() => {self.closeFile(elem)}}><ActionClose /></IconButton>}
-                onClick={(e) => { self.setState({currentTab: elem.name}) }}
-                primaryText={elem.name} key={idx} />
+      return <ListItem rightIconButton={<IconButton onClick={() => {self.closeFile(elem)}}><ActionClose /></IconButton>}
+                       onClick={(e) => { self.setState({currentTab: elem.name}) }}
+                       primaryText={elem.name} key={idx} />
     });
 
     let availableFiles = this.state.files.filter(elem => !elem.open).map((elem, idx) => {
-      return <ListItem
-                onClick={(e) => { self.openFile(elem) }}
-                primaryText={elem.name} key={idx} />
+      return <ListItem onClick={(e) => { self.openFile(elem) }}
+                       primaryText={elem.name} key={idx} />
     });
 
     availableFiles.push( <ListItem key={-1} onClick={() => { this.setState({showDialNewFile: true}) }} primaryText="Add a note" rightIconButton={ <IconButton> <ActionNoteAdd /> </IconButton>}/> )

@@ -90,7 +90,7 @@ class AppComponent extends React.Component {
           iconElementRight={<ConfigurationMenu disconnect={this.disconnect.bind(this)} />}>
         </AppBar>
         <div>
-          <Editor credentials={this.props.credentials} git={this.git} project={this.props.project}/>
+          <Editor basePath="notes" credentials={this.props.credentials} git={this.git} project={this.props.project}/>
         </div>
       </div>
     );
