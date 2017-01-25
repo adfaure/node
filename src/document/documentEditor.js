@@ -1,5 +1,5 @@
 import React from 'react';
-import {CMEditor} from './../codeMirror';
+import { CMEditor } from './../codeMirror';
 
 class DocumentEditor extends React.Component {
 
@@ -8,7 +8,6 @@ class DocumentEditor extends React.Component {
   }
 
   render() {
-    console.log(this.props.cursor)
     return (
       <div>
           <CMEditor initialContent={this.props.doc.content}  

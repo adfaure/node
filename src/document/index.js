@@ -1,3 +1,3 @@
-import {Document} from './documentContainer';
+import {DocumentEditor} from './documentEditor';
 
-module.exports.Document  = Document;
+module.exports.Document  = DocumentEditor;

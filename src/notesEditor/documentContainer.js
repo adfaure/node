@@ -1,14 +1,10 @@
 import React from 'react';
 
-import {DocumentEditor} from './documentEditor';
+import { Document } from './../document';
 import Github from './../github';
 
-var showdown  = require('showdown'),
-    converter = new showdown.Converter(),
-    text      = '#hello, markdown!',
-    html      = converter.makeHtml(text);
 
-class Document extends React.Component {
+class GitRemoteDocumentEditor extends React.Component {
 
   constructor(props) {
     super(props);
@@ -45,17 +41,13 @@ class Document extends React.Component {
     });
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    return document === document;
-  }
-
   render() {
-    return <DocumentEditor doc={this.state.document} save={this.save.bind(this)} cursor={this.cursor}/> 
+    return <Document doc={this.state.document} save={this.save.bind(this)} cursor={this.cursor}/> 
   }
 
 }
 
-Document.propTypes = {
+GitRemoteDocumentEditor.propTypes = {
     username: React.PropTypes.string,
     repo: React.PropTypes.string,
     filename: React.PropTypes.string,
@@ -63,4 +55,4 @@ Document.propTypes = {
 }
 
 
-module.exports.Document = Document;
+module.exports.GitRemoteDocumentEditor = GitRemoteDocumentEditor;

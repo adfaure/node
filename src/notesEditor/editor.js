@@ -1,5 +1,5 @@
 import React from 'react';
-import { Document } from './../document'
+import { GitRemoteDocumentEditor } from './documentContainer'
 
 import {Tabs, Tab} from 'material-ui/Tabs';
 import {List, ListItem} from 'material-ui/List';
@@ -70,11 +70,11 @@ class Editor extends React.Component {
 
   openFile(elem) {
     elem.open = true;
-    elem.doc  = <Document key={elem.name} 
-                          gitConnection={this.props.git}
-                          username={this.props.credentials.username}
-                          filename={this.props.basePath + "/" + elem.name}
-                          repo={this.props.project} />
+    elem.doc  = <GitRemoteDocumentEditor  key={elem.name}
+                                          gitConnection={this.props.git}
+                                          username={this.props.credentials.username}
+                                          filename={this.props.basePath + "/" + elem.name}
+                                          repo={this.props.project} />
 
     this.setState({
                     files: this.state.files,
