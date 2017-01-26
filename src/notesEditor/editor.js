@@ -35,8 +35,7 @@ class Editor extends React.Component {
     this.props.git.getPath(this.props.credentials.username, this.props.project, this.props.basePath).then((res) => {
       var files = res.map((elem) => {return {
         name: elem.name,
-        open: false,
-        doc: null
+        open: false
       }})
       self.setState({files: files});
     });
@@ -53,7 +52,7 @@ class Editor extends React.Component {
     let self = this;
     let filename = this.state.newNoteName;
     this.props.git.createFile(this.props.project, this.props.basePath+"/"+filename, "", "Create " + filename ).then( (res) => {
-      self.state.files.push({ name: res.content.name, open: false, doc:null });
+      self.state.files.push({ name: res.content.name, open: false });
       self.setState({files: self.state.files});
     });
   }
@@ -70,12 +69,6 @@ class Editor extends React.Component {
 
   openFile(elem) {
     elem.open = true;
-    elem.doc  = <GitRemoteDocumentEditor  key={elem.name}
-                                          gitConnection={this.props.git}
-                                          username={this.props.credentials.username}
-                                          filename={this.props.basePath + "/" + elem.name}
-                                          repo={this.props.project} />
-
     this.setState({
                     files: this.state.files,
                     currentTab: elem.name
@@ -102,7 +95,11 @@ class Editor extends React.Component {
                   <Tabs onChange={e => this.handleChange(e) } value={this.state.currentTab}>
                   { this.state.files.filter(elem => elem.open).map((elem, idx) => {
                                 return (<Tab value={elem.name} key={idx} label={elem.name}>
-                                          {elem.doc}
+                                          <GitRemoteDocumentEditor  key={elem.name}
+                                                                                gitConnection={this.props.git}
+                                                                                username={this.props.credentials.username}
+                                                                                filename={this.props.basePath + "/" + elem.name}
+                                                                                repo={this.props.project} />
                                         </Tab>)
                                 }) }
                   </Tabs>
