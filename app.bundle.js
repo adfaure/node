@@ -6565,7 +6565,6 @@ webpackJsonp([0],[
 	  _createClass(GitRemoteDocumentEditor, [{
 	    key: 'onDocumentChange',
 	    value: function onDocumentChange(cm) {
-	      console.log(cm);
 	      this.state.currentContent = cm.getValue();
 	      this.setState({ currentContent: this.state.currentContent });
 	    }

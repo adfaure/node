@@ -4,7 +4,6 @@ body {
 
 .CodeMirror {
   background: #fff;
-  border: 1px solid #ddd;
   margin-left: auto;
   margin-right: auto;
   margin-top: 1rem;
@@ -31,6 +30,7 @@ body {
   min-height: 84vh;
   padding-left: 1rem;
   padding-right: 0.4rem;
+  padding-bottom: 0.7rem;
 }
 
 .markdown h1 {
