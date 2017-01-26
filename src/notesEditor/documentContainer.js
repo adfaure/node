@@ -29,7 +29,6 @@ class GitRemoteDocumentEditor extends React.Component {
   }
 
   onDocumentChange(cm) {
-    console.log(cm);
     this.state.currentContent = cm.getValue();
     this.setState({currentContent: this.state.currentContent});
   }
