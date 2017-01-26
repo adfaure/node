@@ -2,20 +2,36 @@ import React from 'react';
 
 import { Document } from './../document';
 import Github from './../github';
+import MarkdownIt from 'markdown-it';
 
+import Paper from 'material-ui/Paper';
 
 class GitRemoteDocumentEditor extends React.Component {
 
   constructor(props) {
     super(props);
     let self = this;
+    console.log(MarkdownIt)
+    this.md = new MarkdownIt({
+      html: true,
+      linkify: true,
+      typographer: true
+    });
+
     let document = {
       content: ""
     };
     this.state = {
       document: document,
+      currentContent: document.content,
       file :null
     }
+  }
+
+  onDocumentChange(cm) {
+    console.log(cm);
+    this.state.currentContent = cm.getValue();
+    this.setState({currentContent: this.state.currentContent});
   }
 
   componentDidMount() {
@@ -42,7 +58,23 @@ class GitRemoteDocumentEditor extends React.Component {
   }
 
   render() {
-    return <Document doc={this.state.document} save={this.save.bind(this)} cursor={this.cursor}/> 
+    return (<div className="row">
+                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div className="box">
+                      <Document onChange={ (cm) => { this.onDocumentChange(cm) }}
+                                doc={this.state.document}
+                                save={this.save.bind(this)}
+                                cursor={this.cursor}/>
+                    </div>
+                </div>
+                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div className="box">
+                      <div className="markdown">
+                        <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} />
+                      </div>
+                  </div>
+                </div>
+            </div>)
   }
 
 }

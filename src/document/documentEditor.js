@@ -15,7 +15,9 @@ class DocumentEditor extends React.Component {
                     extraKeys={
                                 { 'Ctrl-S':(cm) => { this.props.save(cm) } }
                               }
+                    
                     cursor={this.props.cursor}
+                    onChange={this.props.onChange}
                     mode="markdown" />
       </div>
     );
@@ -26,6 +28,7 @@ class DocumentEditor extends React.Component {
 DocumentEditor.propTypes = { 
     doc: React.PropTypes.object,
     save: React.PropTypes.func.isRequired,
+    onChange: React.PropTypes.func,
     cursor: React.PropTypes.object,
 }
 

@@ -96,10 +96,10 @@ class Editor extends React.Component {
                   { this.state.files.filter(elem => elem.open).map((elem, idx) => {
                                 return (<Tab value={elem.name} key={idx} label={elem.name}>
                                           <GitRemoteDocumentEditor  key={elem.name}
-                                                                                gitConnection={this.props.git}
-                                                                                username={this.props.credentials.username}
-                                                                                filename={this.props.basePath + "/" + elem.name}
-                                                                                repo={this.props.project} />
+                                                                    gitConnection={this.props.git}
+                                                                    username={this.props.credentials.username}
+                                                                    filename={this.props.basePath + "/" + elem.name}
+                                                                    repo={this.props.project} />
                                         </Tab>)
                                 }) }
                   </Tabs>
