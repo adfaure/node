@@ -4,28 +4,30 @@ import { Document } from './../document';
 import Github from './../github';
 import MarkdownIt from 'markdown-it';
 
-import Paper from 'material-ui/Paper';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentEdit from 'material-ui/svg-icons/editor/mode-edit';
+import SaveIcon from 'material-ui/svg-icons/content/save';
 
 class GitRemoteDocumentEditor extends React.Component {
 
   constructor(props) {
     super(props);
     let self = this;
-    console.log(MarkdownIt)
     this.md = new MarkdownIt({
       html: true,
       linkify: true,
       typographer: true
     });
 
-    let document = {
-      content: ""
-    };
     this.state = {
-      document: document,
-      currentContent: document.content,
-      file :null
+      document: {
+        content: ""
+      },
+      currentContent: "",
+      file :null,
+      editMode:false
     }
+
   }
 
   onDocumentChange(cm) {
@@ -39,7 +41,7 @@ class GitRemoteDocumentEditor extends React.Component {
       let document = {
         content: res.content
       };
-      self.setState({document: document, file: res});
+      self.setState({document: document, file: res, currentContent: res.content});
     });
   }
 
@@ -57,25 +59,44 @@ class GitRemoteDocumentEditor extends React.Component {
   }
 
   render() {
-    return (<div className="row">
-                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                    <div className="box">
-                      <Document onChange={ (cm) => { this.onDocumentChange(cm) }}
-                                doc={this.state.document}
-                                save={this.save.bind(this)}
-                                cursor={this.cursor}/>
-                    </div>
-                </div>
-                <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
-                  <div className="box">
-                      <div className="markdown">
-                        <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} />
+    let doc = <Document onChange={ (cm) => { this.onDocumentChange(cm) }}
+                          doc={this.state.document}
+                          key={this.props.filename}
+                          save={this.save.bind(this)}
+                          cursor={this.cursor}/>;
+    if(this.state.editMode) {
+      return (<div className="row">
+                  <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                      <div className="box">
+                        {this.state.editMode && doc}
                       </div>
                   </div>
-                </div>
-            </div>)
+                  <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                    <div className="box">
+                        <FloatingActionButton zDepth={2} onClick={() =>  { this.setState({editMode: !this.state.editMode})} } mini={true}  style={{ 'zIndex': "99", float:"right"}}>
+                          <SaveIcon />
+                        </FloatingActionButton>
+                        <div className="markdown">
+                          <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
+                        </div>
+                    </div>
+                  </div>
+              </div>)
+    } else {
+        return (<div className="row">
+                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                    <div className="box">
+                        <FloatingActionButton zDepth={2} onClick={() =>  { this.setState({editMode: !this.state.editMode})} } mini={true} style={{ 'zIndex': "99", float:"right"}}>
+                          <ContentEdit />
+                        </FloatingActionButton>
+                        <div className="markdown">
+                          <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
+                        </div>
+                    </div>
+                  </div>
+              </div>)
+    }
   }
-
 }
 
 GitRemoteDocumentEditor.propTypes = {
