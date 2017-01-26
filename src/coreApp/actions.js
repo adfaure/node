@@ -14,10 +14,10 @@ export function setProject(project) {
   }
 }
 
-export function setName(name) {
+export function setName(user) {
   return {
-    type: 'SET_NAME',
-    username : name
+    type: 'SET_USER',
+    user : user
   }
 }
 
@@ -29,11 +29,12 @@ export function connectToProject(cred, repo) {
 
     dispatch(setCredentials(cred));
     dispatch(setProject(repo));
+    dispatch(setName({name:cred.username, login:cred.username}));
 
     let git = new Github();
     git.getUser(cred.username).then((user) => {
       if(user) {
-        dispatch(setName(user.name));
+        dispatch(setName(user));
       } else {
         dispatch(setCredentials(null));
         dispatch(setProject(null));

@@ -20,12 +20,12 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 // http://stackoverflow.com/a/34015469/988941 
 injectTapEventPlugin();
 
-let store = createStore(function reducer(state = { credentials: null, username: null, project: null }, action) {
+let store = createStore(function reducer(state = { credentials: null, user: null, project: null }, action) {
   switch (action.type) {
     case 'SET_CREDENTIALS':
       return Object.assign({}, state, { credentials: action.cred })
-    case 'SET_NAME':
-      return Object.assign({}, state, { username: action.username })
+    case 'SET_USER':
+      return Object.assign({}, state, { user: action.user })
     case 'SET_PROJECT':
       return Object.assign({}, state, { project: action.project })
     default:

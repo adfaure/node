@@ -38,7 +38,7 @@ function handleActive(tab) {
 const mapStateToProps = (state) => {
   return {
     credentials: state.credentials,
-    username: state.username,
+    user: state.user,
     project: state.project
   }
 }
@@ -82,11 +82,16 @@ class AppComponent extends React.Component {
 
     if(!this.git)
       this.git = new Github({cred: this.props.credentials});
+    
+    let link = "";
+    if(this.props.user) {
+      link = "https://github.com/" + this.props.user.login + "/" + this.props.project;
+    }
 
     return (
       <div>
         <AppBar
-          title={this.props.username + " - " + this.props.project}
+          title={<div> {this.props.user.name} <a target="_blank" href={link}>  {this.props.project} </a> </div>}
           iconElementRight={<ConfigurationMenu disconnect={this.disconnect.bind(this)} />}>
         </AppBar>
         <div>
