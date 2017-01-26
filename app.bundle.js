@@ -46,14 +46,14 @@ webpackJsonp([0],[
 	(0, _reactTapEventPlugin2.default)();
 
 	var store = (0, _redux.createStore)(function reducer() {
-	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { credentials: null, username: null, project: null };
+	  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { credentials: null, user: null, project: null };
 	  var action = arguments[1];
 
 	  switch (action.type) {
 	    case 'SET_CREDENTIALS':
 	      return Object.assign({}, state, { credentials: action.cred });
-	    case 'SET_NAME':
-	      return Object.assign({}, state, { username: action.username });
+	    case 'SET_USER':
+	      return Object.assign({}, state, { user: action.user });
 	    case 'SET_PROJECT':
 	      return Object.assign({}, state, { project: action.project });
 	    default:
@@ -411,7 +411,7 @@ webpackJsonp([0],[
 	var mapStateToProps = function mapStateToProps(state) {
 	  return {
 	    credentials: state.credentials,
-	    username: state.username,
+	    user: state.user,
 	    project: state.project
 	  };
 	};
@@ -465,11 +465,30 @@ webpackJsonp([0],[
 
 	      if (!this.git) this.git = new _github2.default({ cred: this.props.credentials });
 
+	      var link = "";
+	      if (this.props.user) {
+	        link = "https://github.com/" + this.props.user.login + "/" + this.props.project;
+	      }
+
 	      return _react2.default.createElement(
 	        'div',
 	        null,
 	        _react2.default.createElement(_AppBar2.default, {
-	          title: this.props.username + " - " + this.props.project,
+	          title: _react2.default.createElement(
+	            'div',
+	            null,
+	            ' ',
+	            this.props.user.name,
+	            ' ',
+	            _react2.default.createElement(
+	              'a',
+	              { target: '_blank', href: link },
+	              '  ',
+	              this.props.project,
+	              ' '
+	            ),
+	            ' '
+	          ),
 	          iconElementRight: _react2.default.createElement(ConfigurationMenu, { disconnect: this.disconnect.bind(this) }) }),
 	        _react2.default.createElement(
 	          'div',
@@ -33449,10 +33468,10 @@ webpackJsonp([0],[
 	  };
 	}
 
-	function setName(name) {
+	function setName(user) {
 	  return {
-	    type: 'SET_NAME',
-	    username: name
+	    type: 'SET_USER',
+	    user: user
 	  };
 	}
 
@@ -33464,11 +33483,12 @@ webpackJsonp([0],[
 
 	    dispatch(setCredentials(cred));
 	    dispatch(setProject(repo));
+	    dispatch(setName({ name: cred.username, login: cred.username }));
 
 	    var git = new _github2.default();
 	    git.getUser(cred.username).then(function (user) {
 	      if (user) {
-	        dispatch(setName(user.name));
+	        dispatch(setName(user));
 	      } else {
 	        dispatch(setCredentials(null));
 	        dispatch(setProject(null));
