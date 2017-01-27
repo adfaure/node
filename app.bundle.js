@@ -6683,6 +6683,31 @@ webpackJsonp([0],[
 	          { className: 'row' },
 	          _react2.default.createElement(
 	            'div',
+	            { className: 'float-right' },
+	            _react2.default.createElement(
+	              _IconButton2.default,
+	              { tooltip: 'Close editor', onClick: function onClick() {
+	                  _this3.resetFile();_this3.toogleEdit();
+	                }, style: { 'zIndex': "99", float: "right" } },
+	              _react2.default.createElement(_close2.default, null)
+	            ),
+	            _react2.default.createElement(
+	              _IconButton2.default,
+	              { disabled: !changed, tooltip: 'Save file and close editor', onClick: function onClick() {
+	                  _this3.saveFile(_this3.cm.getValue());
+	                }, style: { 'zIndex': "99", float: "right" } },
+	              _react2.default.createElement(_save2.default, null)
+	            ),
+	            _react2.default.createElement(
+	              _IconButton2.default,
+	              { disabled: !changed, tooltip: 'Reset file', onClick: function onClick() {
+	                  _this3.resetFile();
+	                }, style: { 'zIndex': "99", float: "right" } },
+	              _react2.default.createElement(_undo2.default, null)
+	            )
+	          ),
+	          _react2.default.createElement(
+	            'div',
 	            { className: 'col-xs-7 col-sm-7 col-md-7 col-lg-7' },
 	            _react2.default.createElement(
 	              'div',
@@ -6691,27 +6716,10 @@ webpackJsonp([0],[
 	                _Paper2.default,
 	                { zDepth: changed ? 5 : 0 },
 	                _react2.default.createElement(
-	                  _IconButton2.default,
-	                  { tooltip: 'Close editor', onClick: function onClick() {
-	                      _this3.resetFile();_this3.toogleEdit();
-	                    }, style: { 'zIndex': "99", float: "right" } },
-	                  _react2.default.createElement(_close2.default, null)
-	                ),
-	                _react2.default.createElement(
-	                  _IconButton2.default,
-	                  { disabled: !changed, tooltip: 'Save file and close editor', onClick: function onClick() {
-	                      _this3.toogleEdit(true);
-	                    }, style: { 'zIndex': "99", float: "right" } },
-	                  _react2.default.createElement(_save2.default, null)
-	                ),
-	                _react2.default.createElement(
-	                  _IconButton2.default,
-	                  { disabled: !changed, tooltip: 'Reset file', onClick: function onClick() {
-	                      _this3.resetFile();
-	                    }, style: { 'zIndex': "99", float: "right" } },
-	                  _react2.default.createElement(_undo2.default, null)
-	                ),
-	                doc
+	                  'div',
+	                  null,
+	                  doc
+	                )
 	              )
 	            )
 	          ),
@@ -6752,7 +6760,7 @@ webpackJsonp([0],[
 	              ),
 	              _react2.default.createElement(
 	                _Paper2.default,
-	                { zDepth: 0 },
+	                { zDepth: 1 },
 	                _react2.default.createElement(
 	                  'div',
 	                  { className: 'markdown' },

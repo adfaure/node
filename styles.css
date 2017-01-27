@@ -2,12 +2,17 @@ body {
  background-color: #DCDCDC
 }
 
+.float-right {
+  float: right;;
+}
+
 .CodeMirror {
   background: #fff;
   margin-left: auto;
   margin-right: auto;
   margin-top: 1rem;
   height: auto;
+  padding-bottom: 0.4rem;
 }
 
 .CodeMirror-scroll {
@@ -30,7 +35,7 @@ body {
   min-height: 84vh;
   padding-left: 1rem;
   padding-right: 0.4rem;
-  padding-bottom: 0.7rem;
+  padding-bottom: 0.4rem;
 }
 
 .markdown h1 {
