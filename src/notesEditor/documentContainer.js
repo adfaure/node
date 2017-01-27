@@ -103,6 +103,19 @@ class GitRemoteDocumentEditor extends React.Component {
 
 
   render() {
+    
+    let iconStyle = {
+      'zIndex': "99",
+      'height' : '1.618rem',
+      'width' : '1.618rem',
+    };
+
+    let buttonStyle = {
+      'height' : 'auto',
+      'width' : 'auto',
+      'paddingBottom': '1.618px',
+      'paddingTop': '1.618px',
+    };
 
     let doc = (<Document  onChange={ (cm, event) => { this.onDocumentChange(cm, event) }}
                           initialContent={this.state.initialContent}
@@ -115,37 +128,53 @@ class GitRemoteDocumentEditor extends React.Component {
     let changed    = this.state.hash.toString() != currentSha.toString(); 
 
     if(this.state.editMode && doc) {
-      return (<div className="row">
-                            <div className="float-right"> 
-                              <IconButton tooltip="Close editor" onClick={() =>  { this.resetFile(); this.toogleEdit(); }} style={{ 'zIndex': "99", float:"right"}}>
-                                <ActionClose />
-                              </IconButton>
-                              <IconButton disabled={!changed} tooltip="Save file and close editor"  onClick={() =>  { this.saveFile(this.cm.getValue()) }}  style={{ 'zIndex': "99", float:"right"}}>
-                                <SaveIcon />
-                              </IconButton>
-                              <IconButton  disabled={!changed}  tooltip="Reset file" onClick={() =>  { this.resetFile() }} style={{ 'zIndex': "99", float:"right"}}>
-                                <UndoIcon />
-                              </IconButton>
-                            </div>
-                  <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-                      <div className="box">
-                        <Paper zDepth={changed? 5 : 0}>
-                            <div>
-                              {doc}
-                            </div>
-                        </Paper>
-                      </div>
-                  </div>
-                  <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-                    <div className="box">
-                        <Paper zDepth={0}>
-                          <div className="markdown">
-                            <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
-                          </div>
-                        </Paper>
-                    </div>
-                  </div>
-              </div>)
+      return (<div className="Editor">
+        <div className="Editor-toolbar">
+          
+          <div className="row">
+
+            <div className="col-xs-offset-9 col-xs-3">
+              <div className="box">
+                <IconButton className="float-right" ooltip="Close editor" onClick={() =>  { this.resetFile(); this.toogleEdit(); }} style={buttonStyle} iconStyle={iconStyle}>
+                  <ActionClose />
+                </IconButton>
+                <IconButton className="float-right" disabled={!changed} tooltip="Save file and close editor"  onClick={() =>  { this.saveFile(this.cm.getValue()) }} style={buttonStyle} iconStyle={iconStyle}>
+                  <SaveIcon />
+                </IconButton>
+                <IconButton className="float-right" disabled={!changed}  tooltip="Reset file" onClick={() =>  { this.resetFile() }}  style={buttonStyle} iconStyle={iconStyle}>
+                  <UndoIcon />
+                </IconButton>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        
+        <div className="row">
+          
+          <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
+            <div className="box">
+              <div className="Editor-area">
+                <Paper zDepth={changed? 5 : 0}>
+                  {doc}
+                </Paper>
+              </div>
+            </div>
+          </div>
+          
+          <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
+            <div className="box">
+              <Paper zDepth={0}>
+                <div className="markdown">
+                  <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
+                </div>
+              </Paper>
+            </div>
+          </div>
+
+        </div>
+
+      </div>)
     } else {
         return (<div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
