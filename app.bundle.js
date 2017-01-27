@@ -6449,7 +6449,7 @@ webpackJsonp([0],[
 	              { className: 'box' },
 	              _react2.default.createElement(
 	                _Tabs.Tabs,
-	                { onChange: function onChange(e) {
+	                { tabItemContainerStyle: { height: "2rem" }, onChange: function onChange(e) {
 	                    return _this2.handleChange(e);
 	                  }, value: this.state.currentTab },
 	                this.state.files.filter(function (elem) {
@@ -6457,7 +6457,7 @@ webpackJsonp([0],[
 	                }).map(function (elem, idx) {
 	                  return _react2.default.createElement(
 	                    _Tabs.Tab,
-	                    { value: elem.name, key: idx, label: elem.name },
+	                    { buttonStyle: { height: "auto" }, value: elem.name, key: idx, label: elem.name },
 	                    _react2.default.createElement(_documentContainer.GitRemoteDocumentEditor, { key: elem.name,
 	                      gitConnection: _this2.props.git,
 	                      username: _this2.props.credentials.username,
