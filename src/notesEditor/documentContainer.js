@@ -116,19 +116,23 @@ class GitRemoteDocumentEditor extends React.Component {
 
     if(this.state.editMode && doc) {
       return (<div className="row">
+                            <div className="float-right"> 
+                              <IconButton tooltip="Close editor" onClick={() =>  { this.resetFile(); this.toogleEdit(); }} style={{ 'zIndex': "99", float:"right"}}>
+                                <ActionClose />
+                              </IconButton>
+                              <IconButton disabled={!changed} tooltip="Save file and close editor"  onClick={() =>  { this.saveFile(this.cm.getValue()) }}  style={{ 'zIndex': "99", float:"right"}}>
+                                <SaveIcon />
+                              </IconButton>
+                              <IconButton  disabled={!changed}  tooltip="Reset file" onClick={() =>  { this.resetFile() }} style={{ 'zIndex': "99", float:"right"}}>
+                                <UndoIcon />
+                              </IconButton>
+                            </div>
                   <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                       <div className="box">
                         <Paper zDepth={changed? 5 : 0}>
-                            <IconButton tooltip="Close editor" onClick={() =>  { this.resetFile(); this.toogleEdit(); }} style={{ 'zIndex': "99", float:"right"}}>
-                              <ActionClose />
-                            </IconButton>
-                            <IconButton disabled={!changed} tooltip="Save file and close editor"  onClick={() =>  { this.toogleEdit(true) }}  style={{ 'zIndex': "99", float:"right"}}>
-                              <SaveIcon />
-                            </IconButton>
-                            <IconButton  disabled={!changed}  tooltip="Reset file" onClick={() =>  { this.resetFile() }} style={{ 'zIndex': "99", float:"right"}}>
-                              <UndoIcon />
-                            </IconButton>
-                            {doc}
+                            <div>
+                              {doc}
+                            </div>
                         </Paper>
                       </div>
                   </div>
@@ -149,7 +153,7 @@ class GitRemoteDocumentEditor extends React.Component {
                           <IconButton tooltip="Edit file" onClick={() =>  { this.toogleEdit() } } style={{ 'zIndex': "99", float:"right"}}>
                             <ContentEdit />
                           </IconButton>
-                          <Paper zDepth={0}>
+                          <Paper zDepth={1}>
                             <div className="markdown">
                               <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
                             </div>
