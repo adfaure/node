@@ -6663,6 +6663,19 @@ webpackJsonp([0],[
 	    value: function render() {
 	      var _this3 = this;
 
+	      var iconStyle = {
+	        'zIndex': "99",
+	        'height': '1.618rem',
+	        'width': '1.618rem'
+	      };
+
+	      var buttonStyle = {
+	        'height': 'auto',
+	        'width': 'auto',
+	        'paddingBottom': '1.618px',
+	        'paddingTop': '1.618px'
+	      };
+
 	      var doc = _react2.default.createElement(_document.Document, { onChange: function onChange(cm, event) {
 	          _this3.onDocumentChange(cm, event);
 	        },
@@ -6680,62 +6693,78 @@ webpackJsonp([0],[
 	      if (this.state.editMode && doc) {
 	        return _react2.default.createElement(
 	          'div',
-	          { className: 'row' },
+	          { className: 'Editor' },
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'float-right' },
-	            _react2.default.createElement(
-	              _IconButton2.default,
-	              { tooltip: 'Close editor', onClick: function onClick() {
-	                  _this3.resetFile();_this3.toogleEdit();
-	                }, style: { 'zIndex': "99", float: "right" } },
-	              _react2.default.createElement(_close2.default, null)
-	            ),
-	            _react2.default.createElement(
-	              _IconButton2.default,
-	              { disabled: !changed, tooltip: 'Save file and close editor', onClick: function onClick() {
-	                  _this3.saveFile(_this3.cm.getValue());
-	                }, style: { 'zIndex': "99", float: "right" } },
-	              _react2.default.createElement(_save2.default, null)
-	            ),
-	            _react2.default.createElement(
-	              _IconButton2.default,
-	              { disabled: !changed, tooltip: 'Reset file', onClick: function onClick() {
-	                  _this3.resetFile();
-	                }, style: { 'zIndex': "99", float: "right" } },
-	              _react2.default.createElement(_undo2.default, null)
-	            )
-	          ),
-	          _react2.default.createElement(
-	            'div',
-	            { className: 'col-xs-7 col-sm-7 col-md-7 col-lg-7' },
+	            { className: 'Editor-toolbar' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'box' },
+	              { className: 'row' },
 	              _react2.default.createElement(
-	                _Paper2.default,
-	                { zDepth: changed ? 5 : 0 },
+	                'div',
+	                { className: 'col-xs-offset-9 col-xs-3' },
 	                _react2.default.createElement(
 	                  'div',
-	                  null,
-	                  doc
+	                  { className: 'box' },
+	                  _react2.default.createElement(
+	                    _IconButton2.default,
+	                    { className: 'float-right', ooltip: 'Close editor', onClick: function onClick() {
+	                        _this3.resetFile();_this3.toogleEdit();
+	                      }, style: buttonStyle, iconStyle: iconStyle },
+	                    _react2.default.createElement(_close2.default, null)
+	                  ),
+	                  _react2.default.createElement(
+	                    _IconButton2.default,
+	                    { className: 'float-right', disabled: !changed, tooltip: 'Save file and close editor', onClick: function onClick() {
+	                        _this3.saveFile(_this3.cm.getValue());
+	                      }, style: buttonStyle, iconStyle: iconStyle },
+	                    _react2.default.createElement(_save2.default, null)
+	                  ),
+	                  _react2.default.createElement(
+	                    _IconButton2.default,
+	                    { className: 'float-right', disabled: !changed, tooltip: 'Reset file', onClick: function onClick() {
+	                        _this3.resetFile();
+	                      }, style: buttonStyle, iconStyle: iconStyle },
+	                    _react2.default.createElement(_undo2.default, null)
+	                  )
 	                )
 	              )
 	            )
 	          ),
 	          _react2.default.createElement(
 	            'div',
-	            { className: 'col-xs-5 col-sm-5 col-md-5 col-lg-5' },
+	            { className: 'row' },
 	            _react2.default.createElement(
 	              'div',
-	              { className: 'box' },
+	              { className: 'col-xs-7 col-sm-7 col-md-7 col-lg-7' },
 	              _react2.default.createElement(
-	                _Paper2.default,
-	                { zDepth: 0 },
+	                'div',
+	                { className: 'box' },
 	                _react2.default.createElement(
 	                  'div',
-	                  { className: 'markdown' },
-	                  _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.md.render(this.state.currentContent) } })
+	                  { className: 'Editor-area' },
+	                  _react2.default.createElement(
+	                    _Paper2.default,
+	                    { zDepth: changed ? 5 : 0 },
+	                    doc
+	                  )
+	                )
+	              )
+	            ),
+	            _react2.default.createElement(
+	              'div',
+	              { className: 'col-xs-5 col-sm-5 col-md-5 col-lg-5' },
+	              _react2.default.createElement(
+	                'div',
+	                { className: 'box' },
+	                _react2.default.createElement(
+	                  _Paper2.default,
+	                  { zDepth: 0 },
+	                  _react2.default.createElement(
+	                    'div',
+	                    { className: 'markdown' },
+	                    _react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: this.md.render(this.state.currentContent) } })
+	                  )
 	                )
 	              )
 	            )
