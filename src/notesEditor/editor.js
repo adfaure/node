@@ -92,9 +92,9 @@ class Editor extends React.Component {
             </div>
             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
                 <div className="box">
-                  <Tabs onChange={e => this.handleChange(e) } value={this.state.currentTab}>
+                  <Tabs tabItemContainerStyle={{height:"2rem"}} onChange={e => this.handleChange(e) } value={this.state.currentTab}>
                   { this.state.files.filter(elem => elem.open).map((elem, idx) => {
-                                return (<Tab value={elem.name} key={idx} label={elem.name}>
+                                return (<Tab buttonStyle={{height:"auto"}} value={elem.name} key={idx} label={elem.name}>
                                           <GitRemoteDocumentEditor  key={elem.name}
                                                                     gitConnection={this.props.git}
                                                                     username={this.props.credentials.username}
