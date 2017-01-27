@@ -4,97 +4,159 @@ import { Document } from './../document';
 import Github from './../github';
 import MarkdownIt from 'markdown-it';
 
-import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentEdit from 'material-ui/svg-icons/editor/mode-edit';
 import SaveIcon from 'material-ui/svg-icons/content/save';
+import UndoIcon from 'material-ui/svg-icons/content/undo';
+import IconButton from 'material-ui/IconButton';
+import ActionClose from 'material-ui/svg-icons/navigation/close';
+
+import Paper from 'material-ui/Paper'
+
+import SHA256  from "crypto-js/sha256";
 
 class GitRemoteDocumentEditor extends React.Component {
 
   constructor(props) {
     super(props);
-    let self = this;
     this.md = new MarkdownIt({
       html: true,
       linkify: true,
       typographer: true
     });
-
+    /**
+    * hash: the hash of the last saved content
+    */
     this.state = {
-      document: {
-        content: ""
-      },
+      hash: SHA256(""),
       currentContent: "",
       file :null,
-      editMode:false
+      editMode:false,
+      cursor: null
     }
-
   }
 
-  onDocumentChange(cm) {
+  onDocumentChange(cm, event) {
     this.state.currentContent = cm.getValue();
-    this.setState({currentContent: this.state.currentContent});
+    this.setState({
+      currentContent: this.state.currentContent,
+      cursor: null
+    });
   }
 
   componentDidMount() {
     var self = this;
     this.props.gitConnection.getFile(this.props.username, this.props.repo, this.props.filename).then((res) => {
-      let document = {
-        content: res.content
-      };
-      self.setState({document: document, file: res, currentContent: res.content});
+
+      self.setState({
+        file: res, 
+        initialContent: res.content,
+        currentContent: res.content,
+        hash: SHA256(res.content)
+      });
+
     });
   }
-
-  pushSectionBack(section) {
-    this.props.document.sections.push(section);
-  }
-
-  save(cm, idx) {
+  
+  saveFile(value) {
     let self = this;
-    this.state.document.content = cm.doc.getValue();
-    this.cursor = cm.doc.getCursor();
-    this.props.gitConnection.updateFile(this.props.repo, this.state.file, this.state.document.content).then((res) => {
-      self.setState({file: res.content});
+    this.props.gitConnection.updateFile(this.props.repo, this.state.file, value).then((res) => {
+      self.setState({
+        initialContent: value,
+        currentContent: value,
+        file: res.content,
+        hash: SHA256(this.state.currentContent)
+      });
     });
   }
+
+  resetFile() {
+    if(this.cm) {
+      this.cm.setValue(this.state.initialContent);
+    }
+  }
+  
+  saveCallBack(cm, idx) {
+    let self = this;
+
+    let value  = cm.doc.getValue();
+    let cursor = cm.getCursor();
+
+    this.saveFile(value)
+  }
+  
+  toogleEdit(save) {
+    let self = this;
+    if(this.state.editMode == true) {
+      //This is happening when the ditor mode is switched of.
+      let currentSha = SHA256(this.state.currentContent);
+      if(save && this.state.hash.toString() != currentSha.toString()) {
+        let value  = this.state.currentContent;
+        this.saveFile(value);
+      } else {
+        self.setState({
+          currentContent: this.state.initialContent
+        });
+      }
+    }
+    this.setState({editMode: !this.state.editMode})
+  }
+
 
   render() {
-    let doc = <Document onChange={ (cm) => { this.onDocumentChange(cm) }}
-                          doc={this.state.document}
+
+    let doc = (<Document  onChange={ (cm, event) => { this.onDocumentChange(cm, event) }}
+                          initialContent={this.state.initialContent}
                           key={this.props.filename}
-                          save={this.save.bind(this)}
-                          cursor={this.cursor}/>;
-    if(this.state.editMode) {
+                          cmRef={(cm) => { this.cm = cm; }}
+                          save={this.saveCallBack.bind(this)}
+                          cursor={this.state.cursor}/>);
+
+    let currentSha = SHA256(this.state.currentContent);
+    let changed    = this.state.hash.toString() != currentSha.toString(); 
+
+    if(this.state.editMode && doc) {
       return (<div className="row">
-                  <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
                       <div className="box">
-                        {this.state.editMode && doc}
+                        <Paper zDepth={changed? 5 : 0}>
+                            <IconButton tooltip="Close editor" onClick={() =>  { this.resetFile(); this.toogleEdit(); }} style={{ 'zIndex': "99", float:"right"}}>
+                              <ActionClose />
+                            </IconButton>
+                            <IconButton disabled={!changed} tooltip="Save file and close editor"  onClick={() =>  { this.toogleEdit(true) }}  style={{ 'zIndex': "99", float:"right"}}>
+                              <SaveIcon />
+                            </IconButton>
+                            <IconButton  disabled={!changed}  tooltip="Reset file" onClick={() =>  { this.resetFile() }} style={{ 'zIndex': "99", float:"right"}}>
+                              <UndoIcon />
+                            </IconButton>
+                            {doc}
+                        </Paper>
                       </div>
                   </div>
-                  <div className="col-xs-6 col-sm-6 col-md-6 col-lg-6">
+                  <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
                     <div className="box">
-                        <FloatingActionButton zDepth={2} onClick={() =>  { this.setState({editMode: !this.state.editMode})} } mini={true}  style={{ 'zIndex': "99", float:"right"}}>
-                          <SaveIcon />
-                        </FloatingActionButton>
-                        <div className="markdown">
-                          <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
-                        </div>
+                        <Paper zDepth={0}>
+                          <div className="markdown">
+                            <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
+                          </div>
+                        </Paper>
                     </div>
                   </div>
               </div>)
     } else {
         return (<div className="row">
-                  <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                    <div className="box">
-                        <FloatingActionButton zDepth={2} onClick={() =>  { this.setState({editMode: !this.state.editMode})} } mini={true} style={{ 'zIndex': "99", float:"right"}}>
-                          <ContentEdit />
-                        </FloatingActionButton>
-                        <div className="markdown">
-                          <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
-                        </div>
+                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+                      <div className="box">
+                          <IconButton tooltip="Edit file" onClick={() =>  { this.toogleEdit() } } style={{ 'zIndex': "99", float:"right"}}>
+                            <ContentEdit />
+                          </IconButton>
+                          <Paper zDepth={0}>
+                            <div className="markdown">
+                              <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
+                            </div>
+                          </Paper>
+                      </div>
                     </div>
-                  </div>
-              </div>)
+                </div>)
     }
   }
 }

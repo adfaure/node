@@ -44,16 +44,17 @@ class EditorComponent extends React.Component {
       this.codeMirror.on('change', this.props.onChange);
     }
 
+    if(this.props.cmRef) {
+      this.props.cmRef(this.codeMirror);
+    }
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.initialContent !== this.props.initialContent) {
-      this.codeMirror.setValue(nextProps.initialContent);
-    }
-    
+
     if(nextProps.cursor) {
       this.codeMirror.setCursor(nextProps.cursor);
     }
+
   }
 
   render() {
@@ -73,6 +74,7 @@ EditorComponent.propTypes = {
     extraKeys: React.PropTypes.object,
     initialContent: React.PropTypes.string,
     mode: React.PropTypes.string,
+    cmRef: React.PropTypes.func,
 }
 
 module.exports.CMEditor = EditorComponent;

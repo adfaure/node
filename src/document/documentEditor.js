@@ -10,14 +10,14 @@ class DocumentEditor extends React.Component {
   render() {
     return (
       <div>
-          <CMEditor initialContent={this.props.doc.content}  
+          <CMEditor initialContent={this.props.initialContent}  
                     configuration={ {lineNumbers:true, viewportMargin:Infinity} }
                     extraKeys={
                                 { 'Ctrl-S':(cm) => { this.props.save(cm) } }
                               }
-                    
                     cursor={this.props.cursor}
                     onChange={this.props.onChange}
+                    cmRef={this.props.cmRef}
                     mode="markdown" />
       </div>
     );
@@ -26,9 +26,10 @@ class DocumentEditor extends React.Component {
 }
 
 DocumentEditor.propTypes = { 
-    doc: React.PropTypes.object,
+    initialContent: React.PropTypes.string,
     save: React.PropTypes.func.isRequired,
     onChange: React.PropTypes.func,
+    cmRef: React.PropTypes.func,
     cursor: React.PropTypes.object,
 }
 
