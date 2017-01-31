@@ -4,23 +4,9 @@ import { connect } from 'react-redux'
 import Github from './../github';
 import {Editor} from './../notesEditor';
 
-import LogginComponent  from './loggin'
-import {setCredentials, disconnect} from './actions';
-
-import TextField from 'material-ui/TextField';
-import RaisedButton from 'material-ui/RaisedButton';
-import AppBar from 'material-ui/AppBar';
-import Paper from 'material-ui/Paper';
-import IconButton from 'material-ui/IconButton';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import FlatButton from 'material-ui/FlatButton';
-import Toggle from 'material-ui/Toggle';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import NavigationClose from 'material-ui/svg-icons/navigation/close';
-import Subheader from 'material-ui/Subheader';
-import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import LogginComponent from './loggin'
+import AppBar from './appBar'
+import {disconnect} from './actions';
 
 const styles = {
   headline: {
@@ -51,18 +37,6 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const ConfigurationMenu = (props) => (
-  <IconMenu
-    iconButtonElement={
-      <IconButton><MoreVertIcon /></IconButton>
-    }
-    targetOrigin={{horizontal: 'right', vertical: 'top'}}
-    anchorOrigin={{horizontal: 'right', vertical: 'top'}}
-    >
-    <MenuItem primaryText="Sign out" onClick={props.disconnect}/>
-  </IconMenu>
-);
-
 class AppComponent extends React.Component {
 
   constructor(props) {
@@ -82,18 +56,10 @@ class AppComponent extends React.Component {
 
     if(!this.git)
       this.git = new Github({cred: this.props.credentials});
-    
-    let link = "";
-    if(this.props.user) {
-      link = "https://github.com/" + this.props.user.login + "/" + this.props.project;
-    }
 
     return (
       <div>
-        <AppBar
-          title={<div> {this.props.user.name} <a target="_blank" href={link}>  {this.props.project} </a> </div>}
-          iconElementRight={<ConfigurationMenu disconnect={this.disconnect.bind(this)} />}>
-        </AppBar>
+        <AppBar user={this.props.user} disconnect={this.disconnect.bind(this)} project={this.props.project} />
         <div>
           <Editor basePath="notes" credentials={this.props.credentials} git={this.git} project={this.props.project}/>
         </div>
