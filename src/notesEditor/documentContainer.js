@@ -179,7 +179,7 @@ class GitRemoteDocumentEditor extends React.Component {
         return (<div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
                       <div className="box">
-                          <IconButton tooltip="Edit file" onClick={() =>  { this.toogleEdit() } } style={{ 'zIndex': "99", float:"right"}}>
+                          <IconButton tooltip="Edit file" onClick={() =>  { this.toogleEdit() } } style={{ 'zIndex': "1", float:"right"}}>
                             <ContentEdit />
                           </IconButton>
                           <Paper zDepth={1}>

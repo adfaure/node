@@ -5,6 +5,8 @@ import IconButton from 'material-ui/IconButton';
 import IconMenu from 'material-ui/IconMenu';
 import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
+import Headroom from 'react-headroom';
+
 
 const ConfigurationMenu = (props) => (
   <IconMenu
@@ -30,9 +32,9 @@ class AppBar extends React.Component {
     if(this.props.user) {
       link = "https://github.com/" + this.props.user.login + "/" + this.props.project;
     }
-    // 
 
     return (
+      <Headroom style={{zIndex:99}}>
       <div className="row appBar">
         <div className="col-xs-9">
           <div className="box box-container">
@@ -51,6 +53,7 @@ class AppBar extends React.Component {
           </div>
         </div>
       </div>
+      </Headroom>
     );
   }
 
