@@ -59,8 +59,10 @@ class AppComponent extends React.Component {
 
     return (
       <div>
-        <AppBar user={this.props.user} disconnect={this.disconnect.bind(this)} project={this.props.project} />
-        <div>
+        <div id="header">
+          <AppBar user={this.props.user} disconnect={this.disconnect.bind(this)} project={this.props.project} />
+        </div>
+        <div id="content">
           <Editor basePath="notes" credentials={this.props.credentials} git={this.git} project={this.props.project}/>
         </div>
       </div>

@@ -48,7 +48,7 @@ class GitRemoteDocumentEditor extends React.Component {
     this.props.gitConnection.getFile(this.props.username, this.props.repo, this.props.filename).then((res) => {
 
       self.setState({
-        file: res, 
+        file: res,
         initialContent: res.content,
         currentContent: res.content,
         hash: SHA256(res.content)
@@ -56,7 +56,7 @@ class GitRemoteDocumentEditor extends React.Component {
 
     });
   }
-  
+
   saveFile(value) {
     let self = this;
     this.props.gitConnection.updateFile(this.props.repo, this.state.file, value).then((res) => {
@@ -74,7 +74,7 @@ class GitRemoteDocumentEditor extends React.Component {
       this.cm.setValue(this.state.initialContent);
     }
   }
-  
+
   saveCallBack(cm, idx) {
     let self = this;
 
@@ -83,7 +83,7 @@ class GitRemoteDocumentEditor extends React.Component {
 
     this.saveFile(value)
   }
-  
+
   toogleEdit(save) {
     let self = this;
     if(this.state.editMode == true) {
@@ -103,7 +103,7 @@ class GitRemoteDocumentEditor extends React.Component {
 
 
   render() {
-    
+
     let iconStyle = {
       'zIndex': "99",
       'height' : '1.618rem',
@@ -125,12 +125,12 @@ class GitRemoteDocumentEditor extends React.Component {
                           cursor={this.state.cursor}/>);
 
     let currentSha = SHA256(this.state.currentContent);
-    let changed    = this.state.hash.toString() != currentSha.toString(); 
+    let changed    = this.state.hash.toString() != currentSha.toString();
 
     if(this.state.editMode && doc) {
       return (<div className="Editor">
         <div className="Editor-toolbar">
-          
+
           <div className="row">
 
             <div className="col-xs-offset-9 col-xs-3">
@@ -149,46 +149,42 @@ class GitRemoteDocumentEditor extends React.Component {
           </div>
 
         </div>
-        
+
         <div className="row">
-          
+
           <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-            <div className="box">
-              <div className="Editor-area">
+            <div className="Editor-area">
                 <Paper zDepth={changed? 5 : 0}>
                   {doc}
                 </Paper>
-              </div>
             </div>
           </div>
-          
+
           <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-            <div className="box">
-              <Paper zDepth={0}>
-                <div className="markdown">
-                  <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
-                </div>
-              </Paper>
-            </div>
+            <Paper zDepth={0}>
+              <div className="markdown">
+                <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
+              </div>
+            </Paper>
           </div>
 
         </div>
 
       </div>)
     } else {
-        return (<div className="row">
+        return (<div> {/* In case of I need a container-fluid*/}
+                  <div className="row">
                     <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                      <div className="box">
-                          <IconButton tooltip="Edit file" onClick={() =>  { this.toogleEdit() } } style={{ 'zIndex': "1", float:"right"}}>
-                            <ContentEdit />
-                          </IconButton>
-                          <Paper zDepth={1}>
-                            <div className="markdown">
-                              <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
-                            </div>
-                          </Paper>
-                      </div>
+                        <IconButton tooltip="Edit file" onClick={() =>  { this.toogleEdit() } } style={{ 'zIndex': "1", float:"right"}}>
+                          <ContentEdit />
+                        </IconButton>
+                        <Paper zDepth={1}>
+                          <div className="markdown">
+                            <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
+                          </div>
+                        </Paper>
                     </div>
+                  </div>
                 </div>)
     }
   }

@@ -79,31 +79,26 @@ class Editor extends React.Component {
   render() {
     let self = this;
     return (
-      <div>
+      <div className="container-fluid">
+        {/* https://github.com/twbs/bootstrap/issues/8959 */}
         <div className="row">
             <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-                <div className="box">
                   <TreeList  onClickAddNote={() => { this.setState({showDialNewFile: true}) }}
                              onClickOpenItem={(e) => { self.setState({currentTab: e.name}) }}
                              onClickCloseOpenItem={ (e) => { self.closeFile(e) }}
                              onAvailableItem={(e) => { self.openFile(e) }}
                              files={this.state.files} />
-                </div>
             </div>
             <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-                <div className="box">
-                  <Tabs tabItemContainerStyle={{height:"2rem"}} onChange={e => this.handleChange(e) } value={this.state.currentTab}>
-                  { this.state.files.filter(elem => elem.open).map((elem, idx) => {
-                                return (<Tab buttonStyle={{height:"auto"}} value={elem.name} key={idx} label={elem.name}>
-                                          <GitRemoteDocumentEditor  key={elem.name}
-                                                                    gitConnection={this.props.git}
-                                                                    username={this.props.credentials.username}
-                                                                    filename={this.props.basePath + "/" + elem.name}
-                                                                    repo={this.props.project} />
-                                        </Tab>)
-                                }) }
-                  </Tabs>
-                </div>
+                  { this.state.files.filter(elem => elem.name == this.state.currentTab).map((elem, idx) => {
+                        return (   <GitRemoteDocumentEditor  key={elem.name}
+                                                             gitConnection={this.props.git}
+                                                             username={this.props.credentials.username}
+                                                             filename={this.props.basePath + "/" + elem.name}
+                                                             repo={this.props.project} />
+                                )
+                        })
+                  }
             </div>
         </div>
 

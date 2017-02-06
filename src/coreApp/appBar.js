@@ -34,26 +34,23 @@ class AppBar extends React.Component {
     }
 
     return (
-      <Headroom style={{zIndex:99}}>
-      <div className="row appBar">
-        <div className="col-xs-9">
-          <div className="box box-container">
-            <p style={{"paddingLeft": "1em"}}> {this.props.user.name} <a target="_blank" href={link}>  {this.props.project} </a>  </p>
-          </div>
-        </div>
-        <div className="col-xs-3">
-          <div className="box box-container">
-            <div className="row end-xs">
-              <div className="col-xs-6">
-                <div className="box">
-                  <div> <ConfigurationMenu disconnect={this.props.disconnect} /> </div>
-                </div>
-              </div>
+      <div  className="container-fluid appBar">
+        <div className="row ">
+
+            <div className="col-xs-9">
+                <p style={{"paddingLeft": "1em"}}> {this.props.user.name} <a target="_blank" href={link}>  {this.props.project} </a>  </p>
             </div>
-          </div>
+
+            <div className="col-xs-3">
+                <div className="row end-xs">
+                  <div className="col-xs-6">
+                      <div> <ConfigurationMenu disconnect={this.props.disconnect} /> </div>
+                  </div>
+                </div>
+            </div>
+
         </div>
       </div>
-      </Headroom>
     );
   }
 
