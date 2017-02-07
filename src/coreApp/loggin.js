@@ -1,6 +1,5 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { Document } from './../document'
 
 import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
@@ -16,7 +15,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  
+
   return {
     connectToProject: (cred, repo) => {
       dispatch(connectToProject(cred, repo));
@@ -27,7 +26,7 @@ const mapDispatchToProps = (dispatch) => {
 
 
 class LogginComponent extends React.Component {
-  
+
   constructor(props) {
     super(props);
     var rawCred = localStorage.getItem('credentials');

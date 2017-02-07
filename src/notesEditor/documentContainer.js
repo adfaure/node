@@ -1,28 +1,28 @@
 import React from 'react';
 
-import { Document } from './../document';
 import Github from './../github';
 import MarkdownIt from 'markdown-it';
+import SHA256  from "crypto-js/sha256";
 
-import ContentEdit from 'material-ui/svg-icons/editor/mode-edit';
-import SaveIcon from 'material-ui/svg-icons/content/save';
-import UndoIcon from 'material-ui/svg-icons/content/undo';
 import IconButton from 'material-ui/IconButton';
-import ActionClose from 'material-ui/svg-icons/navigation/close';
 
 import Paper from 'material-ui/Paper'
 
-import SHA256  from "crypto-js/sha256";
+
+import { CMEditor } from './../codeMirror';
+
 
 class GitRemoteDocumentEditor extends React.Component {
 
   constructor(props) {
     super(props);
+
     this.md = new MarkdownIt({
       html: true,
       linkify: true,
       typographer: true
     });
+
     /**
     * hash: the hash of the last saved content
     */
@@ -57,9 +57,11 @@ class GitRemoteDocumentEditor extends React.Component {
     });
   }
 
-  saveFile(value) {
+  saveFile(file) {
     let self = this;
-    this.props.gitConnection.updateFile(this.props.repo, this.state.file, value).then((res) => {
+    var content = this.cm.getValue();
+    console.log(file);
+    this.props.gitConnection.updateFile(this.props.repo, this.state.file, content).then((res) => {
       self.setState({
         initialContent: value,
         currentContent: value,
@@ -86,7 +88,7 @@ class GitRemoteDocumentEditor extends React.Component {
 
   toogleEdit(save) {
     let self = this;
-    if(this.state.editMode == true) {
+    if(this.props.editMode == true) {
       //This is happening when the ditor mode is switched of.
       let currentSha = SHA256(this.state.currentContent);
       if(save && this.state.hash.toString() != currentSha.toString()) {
@@ -98,103 +100,68 @@ class GitRemoteDocumentEditor extends React.Component {
         });
       }
     }
-    this.setState({editMode: !this.state.editMode})
+    this.setState({editMode: !this.props.editMode})
   }
 
-
   render() {
-
-    let iconStyle = {
-      'zIndex': "99",
-      'height' : '1.618rem',
-      'width' : '1.618rem',
-    };
-
-    let buttonStyle = {
-      'height' : 'auto',
-      'width' : 'auto',
-      'paddingBottom': '1.618px',
-      'paddingTop': '1.618px',
-    };
-
-    let doc = (<Document  onChange={ (cm, event) => { this.onDocumentChange(cm, event) }}
-                          initialContent={this.state.initialContent}
-                          key={this.props.filename}
-                          cmRef={(cm) => { this.cm = cm; }}
-                          save={this.saveCallBack.bind(this)}
-                          cursor={this.state.cursor}/>);
+    console.log("render")
+    let editor =  <CMEditor initialContent={this.state.initialContent}
+                            configuration={ {lineNumbers:true, viewportMargin:Infinity} }
+                            extraKeys={
+                                { 'Ctrl-S': (cm) => { this.saveFile(cm, this.state.currentFile) } }
+                            }
+                            cursor={this.state.cursor}
+                            onChange={ (cm, event) => { this.onDocumentChange(cm, event) } }
+                            cmRef={(cm) => { this.cm = cm; }}
+                            mode="markdown" />
 
     let currentSha = SHA256(this.state.currentContent);
     let changed    = this.state.hash.toString() != currentSha.toString();
 
-    if(this.state.editMode && doc) {
-      return (<div className="Editor">
-        <div className="Editor-toolbar">
+    if(this.props.editMode) {
+      return (<div className="Editor" >
+      <div className="row">
 
-          <div className="row">
-
-            <div className="col-xs-offset-9 col-xs-3">
-              <div className="box">
-                <IconButton className="float-right" ooltip="Close editor" onClick={() =>  { this.resetFile(); this.toogleEdit(); }} style={buttonStyle} iconStyle={iconStyle}>
-                  <ActionClose />
-                </IconButton>
-                <IconButton className="float-right" disabled={!changed} tooltip="Save file and close editor"  onClick={() =>  { this.saveFile(this.cm.getValue()) }} style={buttonStyle} iconStyle={iconStyle}>
-                  <SaveIcon />
-                </IconButton>
-                <IconButton className="float-right" disabled={!changed}  tooltip="Reset file" onClick={() =>  { this.resetFile() }}  style={buttonStyle} iconStyle={iconStyle}>
-                  <UndoIcon />
-                </IconButton>
-              </div>
-            </div>
+        <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7  editor-left">
+          <div className="Editor-area">
+            <Paper zDepth={changed? 5 : 0}>
+              {editor}
+            </Paper>
           </div>
-
         </div>
 
-        <div className="row">
-
-          <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7">
-            <div className="Editor-area">
-                <Paper zDepth={changed? 5 : 0}>
-                  {doc}
-                </Paper>
+        <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5  editor-right">
+          <Paper zDepth={0}>
+            <div className="markdown">
+              <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
             </div>
-          </div>
+          </Paper>
+        </div>
 
-          <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5">
-            <Paper zDepth={0}>
+      </div>
+    </div>)
+    } else {
+      return (<div> {/* In case of I need a container-fluid*/}
+        <div className="row">
+          <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <Paper zDepth={1}>
               <div className="markdown">
                 <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
               </div>
             </Paper>
           </div>
-
         </div>
-
       </div>)
-    } else {
-        return (<div> {/* In case of I need a container-fluid*/}
-                  <div className="row">
-                    <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-                        <IconButton tooltip="Edit file" onClick={() =>  { this.toogleEdit() } } style={{ 'zIndex': "1", float:"right"}}>
-                          <ContentEdit />
-                        </IconButton>
-                        <Paper zDepth={1}>
-                          <div className="markdown">
-                            <div dangerouslySetInnerHTML={{__html: this.md.render(this.state.currentContent)}} ></div>
-                          </div>
-                        </Paper>
-                    </div>
-                  </div>
-                </div>)
     }
   }
 }
 
 GitRemoteDocumentEditor.propTypes = {
-    username: React.PropTypes.string,
-    repo: React.PropTypes.string,
-    filename: React.PropTypes.string,
-    gitConnection: React.PropTypes.object,
+  username: React.PropTypes.string,
+  repo: React.PropTypes.string,
+  filename: React.PropTypes.string,
+  gitConnection: React.PropTypes.object,
+  editMode: React.PropTypes.bool.isRequired,
 }
 
 

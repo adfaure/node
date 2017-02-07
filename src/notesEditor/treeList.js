@@ -20,8 +20,8 @@ class TreeList extends React.Component {
     let self = this;
 
     let openFiles = this.props.files.filter(elem => elem.open).map((elem, idx) => {
-      return <ListItem rightIconButton={<IconButton onClick={ (e) =>{ this.props.onClickCloseOpenItem(elem) }}><ActionClose /></IconButton>}
-                       onClick={(e) => { this.props.onClickOpenItem(elem) }}
+      return <ListItem rightIconButton={<IconButton onClick={ (e) =>{ this.props.onClickCloseOpenItem(elem); e.stopPropagation(); }}><ActionClose /></IconButton>}
+                       onClick={(e) => { this.props.onClickOpenedItem(elem); }}
                        primaryText={elem.name} key={idx} />
     });
 
@@ -48,7 +48,7 @@ class TreeList extends React.Component {
 
 TreeList.propTypes = {
     files: React.PropTypes.array.isRequired,
-    onClickOpenItem: React.PropTypes.func.isRequired,
+    onClickOpenedItem: React.PropTypes.func.isRequired,
     onClickCloseOpenItem: React.PropTypes.func.isRequired,
     onAvailableItem: React.PropTypes.func.isRequired,
     onClickAddNote: React.PropTypes.func.isRequired,
