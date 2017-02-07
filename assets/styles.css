@@ -46,6 +46,10 @@ body {
   background: #fff;
 }
 
+.markdown * {
+  margin-top: 0px;
+  background: white;
+}
 
 .markdown div {
   background: white;
@@ -55,10 +59,6 @@ body {
   padding-bottom: 0.4rem;
 }
 
-.markdown h1 {
-  margin-top: 0px;
-  background: white;
-}
 
 
 .CodeMirror {

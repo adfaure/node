@@ -31,7 +31,12 @@ class EditorToolbar extends React.Component {
     return (
       <div className="Editor-toolbar">
         <div className="row">
-          <div className="col-xs-offset-9 col-xs-3">
+          <div className="col-xs-3">
+            <div style={{'paddingLeft':'1rem'}}>
+              {this.props.filename}
+            </div>
+          </div>
+          <div className="col-xs-offset-6 col-xs-3">
             <div className="box">
               {
                 // <IconButton className="float-right" style={buttonStyle} iconStyle={iconStyle}>

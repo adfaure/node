@@ -1,6 +1,7 @@
 import React from 'react';
 import { GitRemoteDocumentEditor } from './documentContainer'
 import TreeList from './treeList'
+import FileEditor from './fileEditor'
 import EditorToolbar from './toolbar'
 
 import {List, ListItem} from 'material-ui/List';
@@ -15,10 +16,8 @@ import SaveIcon from 'material-ui/svg-icons/content/save';
 import UndoIcon from 'material-ui/svg-icons/content/undo';
 import Paper from 'material-ui/Paper'
 
-import MarkdownIt from 'markdown-it';
 import SHA256  from "crypto-js/sha256";
 
-import { CMEditor } from './../codeMirror';
 
 
 class Editor extends React.Component {
@@ -26,16 +25,9 @@ class Editor extends React.Component {
   constructor(props) {
     super(props);
 
-    this.md = new MarkdownIt({
-      html: true,
-      linkify: true,
-      typographer: true
-    });
-
     this.state = {
       showDialNewFile: false,
       files: [],
-      preview: "",
       currentFile: null,
       editMode: false,
       newNoteName: ""
@@ -80,7 +72,6 @@ class Editor extends React.Component {
 
     if(this.state.currentFile && elem.name == this.state.currentFile.name) {
       // If the file to close is the current file.
-      this.cm.setValue("");
       this.setState({files: this.state.files, currentFile: null})
     } else {
       this.setState({files: this.state.files})
@@ -100,23 +91,23 @@ class Editor extends React.Component {
   }
 
   saveFile(cm, file) {
-
     let self = this;
     let currentFile = this.state.files.find(elem => elem.name == file.name);
     let content = cm.getValue();
 
-    this.props.git.updateFile(this.props.project, currentFile.remoteFile, content).then((res) => {
+    return this.props.git.updateFile(this.props.project, currentFile.remoteFile, content).then((res) => {
       Object.assign(currentFile.remoteFile, res.content, {content: content});
-      console.log(currentFile);
       self.setState({files: this.state.files})
+      return cm;
     });
+
   }
 
   setCurrentFile(file) {
     /* Triggered when the user select the file to be the current file */
     let currentFile = this.state.files.find(elem => elem.name == file.name);
 
-    this.cm.setValue(currentFile.remoteFile.content)
+    // this.cm.setValue(currentFile.remoteFile.content)
     this.setState({ currentFile: currentFile });
 
   }
@@ -125,22 +116,12 @@ class Editor extends React.Component {
     /* Triggered when the user wants to edit the file*/
   }
 
-  onDocumentChange(cm, event) {
-    this.setState({ preview:  this.md.render(cm.getValue()) });
-  }
-
-  hasFileChanged() {
-    console.log("testSgae")
-    if(!this.state.currentFile || !this.cm) return false;
-
-    let currentSha = SHA256(this.cm.getValue());
-    let fileSha    = SHA256(this.state.currentFile.remoteFile.content);
-
-    return fileSha.toString() != currentSha.toString();
-  }
-
   render() {
     let self = this;
+    let currentFilename = "";
+    if(this.state.currentFile) {
+      currentFilename = this.state.currentFile.name;
+    }
 
     return (
       <div className="container-fluid">
@@ -159,34 +140,13 @@ class Editor extends React.Component {
           <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
 
               <EditorToolbar
+                filename={ currentFilename }
                 onClickEditToggle={() => { this.editFile(this.state.currentFile) }} />
 
               <div className="Editor" >
-                <div className="row">
-
-                  <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7 editor-left">
-                    <div className="Editor-area">
-                      <Paper  zDepth={this.hasFileChanged() ? 5 : 0}>
-                        <CMEditor configuration={ {lineNumbers:true, viewportMargin:Infinity} }
-                                  extraKeys={
-                                      { 'Ctrl-S': (cm) => { this.saveFile(cm, this.state.currentFile) } }
-                                  }
-                                  cmRef={(cm) => { this.cm = cm; }}
-                                  onChange={ (cm, event) => { this.onDocumentChange(cm, event) } }
-                                  mode="markdown" />
-                      </Paper>
-                    </div>
-                  </div>
-
-                  <div className="col-xs-5 col-sm-5 col-md-5 col-lg-5  editor-right">
-                    <Paper zDepth={0}>
-                      <div className="markdown">
-                        <div dangerouslySetInnerHTML={{ __html: this.state.preview }} ></div>
-                      </div>
-                    </Paper>
-                  </div>
-
-                </div>
+                <FileEditor
+                  saveFile={(cm, file) => this.saveFile(cm,file)}
+                  file={this.state.currentFile} />
               </div>
           </div>
 
