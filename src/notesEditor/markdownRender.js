@@ -6,7 +6,6 @@ class MarkdownRender extends React.Component {
 
   constructor(props) {
     super(props);
-
     this.md = new MarkdownIt({
       html: true,
       linkify: true,
@@ -14,6 +13,7 @@ class MarkdownRender extends React.Component {
     });
 
   }
+
 
   render() {
     let html = this.md.render(this.props.content);
