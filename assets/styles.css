@@ -79,18 +79,6 @@ html, body {
   background: white;
 }
 
-.markdown * {
-  margin: 0px;
-  width: 100%;
-}
-
-.markdown div {
-  min-height: 84vh;
-  padding-left: 1rem;
-  padding-right: 0.4rem;
-  padding-bottom: 0.4rem;
-}
-
 .CodeMirror {
   height: 100%;
   border-right: solid 1px grey;
