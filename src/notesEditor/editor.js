@@ -1,5 +1,4 @@
 import React from 'react';
-import { GitRemoteDocumentEditor } from './documentContainer'
 import TreeList from './treeList'
 import MarkdownRender from './markdownRender'
 import EditorToolbar from './toolbar'
@@ -181,52 +180,54 @@ class Editor extends React.Component {
     let self = this;
 
     return (
-      <div className="container-fluid">
+      <div className="Editor">
+        <div className="container-fluid Editor-elem">
         {/* https://github.com/twbs/bootstrap/issues/8959 */}
-        <div className="row" >
+        <div className="row Editor-elem" >
 
-          <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2">
+          <div className="col-xs-2 col-sm-2 col-md-2 col-lg-2 Editor-elem">
+            <div className="treeList Editor-scroll">
             <TreeList
               onClickAddNote={() => { this.setState({showDialNewFile: true}) }}
               onClickOpenedItem={(e) => { self.setCurrentFile(e) }}
               onClickCloseOpenItem={ (e) => { self.closeFile(e); }}
               onAvailableItem={(e) => { self.loadFile(e).then((file) => { self.setCurrentFile(file) }) }}
               files={this.state.files} />
+            </div>
           </div>
 
-          <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10">
-
-              <EditorToolbar
-                onClickEditToggle={() => { this.editFile(this.state.currentFile) }} />
-
-              <div className="Editor" >
-                <div className="row">
+          <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10 Editor-elem">
+              <div className="Editor-toolbar">
+                <EditorToolbar
+                  onClickEditToggle={() => { this.editFile(this.state.currentFile) }}
+                  file={this.state.currentFile} />
+              </div>
+              <div className="Editor-root" >
+                <div className="row Editor-elem">
                   {/*
                     We need to have a CMEditor in everycase to obtain a ref on the codeMirror instance.
                     I dont know yet if there is a better solution.
                   */}
-                  <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7 editor-left" hidden={this.hideEditor()}>
-                    <div className="Editor-area">
-                      <Paper  zDepth={this.hasFileChanged() ? 5 : 0}>
+                  <div className="col-xs-7 col-sm-7 col-md-7 col-lg-7 Editor-elem" hidden={this.hideEditor()}>
+                    <div className="Editor-area Editor-elem">
                         <CMEditor configuration={ {lineNumbers:true, viewportMargin:Infinity} }
                                   extraKeys={
                                       { 'Ctrl-S': (cm) => { this.saveFile(cm, this.state.currentFile) } }
                                   }
                                   cmRef={(cm) => { this.cm = cm; }}
                                   onChange={ (cm, event) => { this.onDocumentChange(cm, event) } }
+                                  style={{height: '100%'}}
                                   mode="markdown" />
-                      </Paper>
                     </div>
                   </div>
 
-                  <div className="col-xs editor-right">
-                    <Paper zDepth={this.hasFileChanged() ? 5 : 0}>
+                  <div className="col-xs editor-right Editor-scroll markdown-preview">
                       <MarkdownRender content={this.state.preview} />
-                    </Paper>
                   </div>
 
                 </div>
               </div>
+          </div>
           </div>
 
         </div>

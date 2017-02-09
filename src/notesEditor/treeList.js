@@ -32,7 +32,7 @@ class TreeList extends React.Component {
 
     availableFiles.push( <ListItem key={-1} onClick={(event) => this.props.onClickAddNote(event) } primaryText="Add a note" rightIconButton={ <IconButton> <ActionNoteAdd /> </IconButton>}/> )
 
-    let tree = (<div>
+    let tree = (<div className="treeList-root">
                   <Subheader>Opened notes</Subheader>
                   <List> {openFiles} </List>
                   <Divider />

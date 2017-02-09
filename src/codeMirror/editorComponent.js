@@ -59,13 +59,13 @@ class EditorComponent extends React.Component {
 
   render() {
     return (
-      <div ref="editor"></div>
+      <div style={this.props.style} ref="editor"></div>
     );
   }
 
 }
 
-EditorComponent.propTypes = { 
+EditorComponent.propTypes = {
     onChange: React.PropTypes.func,
     configuration: React.PropTypes.object,
     commands: React.PropTypes.object,

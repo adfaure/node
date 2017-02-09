@@ -29,11 +29,11 @@ class EditorToolbar extends React.Component {
   render() {
 
     return (
-      <div className="Editor-toolbar">
+      <div className="Editor-toolbar-root">
         <div className="row">
           <div className="col-xs-3">
             <div style={{'paddingLeft':'1rem'}}>
-              {this.props.filename}
+              {this.props.file && this.props.file.name}
             </div>
           </div>
           <div className="col-xs-offset-6 col-xs-3">
