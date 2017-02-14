@@ -48,8 +48,14 @@ html, body {
 
 .Editor-toolbar {
   border-bottom: 1px solid #808080;
-  height: 3%;
+  height: 32px;
   background: #fff;
+}
+
+.Editor-toolbar-title {
+  padding-left: 1em;
+  height: 29px;
+  line-height: 29px;
 }
 
 .Editor-root {
