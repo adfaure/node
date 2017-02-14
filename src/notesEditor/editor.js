@@ -6,18 +6,37 @@ import EditorToolbar from './toolbar'
 import {List, ListItem} from 'material-ui/List';
 
 import IconButton from 'material-ui/IconButton';
+import UpdateIcon from 'material-ui/svg-icons/action/update';
+import {red500, yellow500, blue500} from 'material-ui/styles/colors';
+import Badge from 'material-ui/Badge';
 import TextField from 'material-ui/TextField';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 
-import ActionClose from 'material-ui/svg-icons/navigation/close';
-import SaveIcon from 'material-ui/svg-icons/content/save';
-import UndoIcon from 'material-ui/svg-icons/content/undo';
 import Paper from 'material-ui/Paper'
 
 import SHA256  from "crypto-js/sha256";
 
 import { CMEditor } from './../codeMirror';
+
+/* toolbar icons */
+import SaveIcon from 'material-ui/svg-icons/content/save';
+import ContentEdit from 'material-ui/svg-icons/editor/mode-edit';
+import UndoIcon from 'material-ui/svg-icons/content/undo';
+
+
+let iconStyle = {
+  'zIndex': "99",
+  'height' : '1.618rem',
+  'width' : '1.618rem',
+};
+
+let buttonStyle = {
+  'height' : 'auto',
+  'width' : 'auto',
+  'paddingBottom': '1.618px',
+  'paddingTop': '1.618px',
+};
 
 class Editor extends React.Component {
 
@@ -149,6 +168,9 @@ class Editor extends React.Component {
     if(this.cm) this.cm.refresh();
   }
 
+  resetFile(file) {
+    console.log("not implemented");
+  }
   /**
    * Pretty messed up function, but it still imrpoves the editor perf
    */
@@ -176,6 +198,7 @@ class Editor extends React.Component {
     return !(this.state.currentFile && this.state.currentFile.editMode);
   }
 
+
   render() {
     let self = this;
 
@@ -196,11 +219,22 @@ class Editor extends React.Component {
             </div>
           </div>
 
+
           <div className="col-xs-10 col-sm-10 col-md-10 col-lg-10 Editor-elem">
               <div className="Editor-toolbar">
                 <EditorToolbar
-                  onClickEditToggle={() => { this.editFile(this.state.currentFile) }}
-                  file={this.state.currentFile} />
+                  titleElem={<div> {this.state.currentFile && this.state.currentFile.name} {this.hasFileChanged() && <i className="fa fa-circle fa-1" aria-hidden="true"></i>}</div>}
+                  toggleEditElement={<IconButton onClick={() => { this.editFile(this.state.currentFile) }} tooltip="Edit file" className="float-right" style={buttonStyle} iconStyle={iconStyle}>
+                                      <ContentEdit />
+                                     </IconButton>}
+                  saveFileElement={<IconButton disabled={!this.hasFileChanged()} onClick={() => { this.saveFile(this.cm, this.state.currentFile)  }} className="float-right" style={buttonStyle} iconStyle={iconStyle}>
+                                      <SaveIcon />
+                                   </IconButton>}
+                  revertFileElement={<IconButton disabled={this.hasFileChanged()} onClick={() => { this.resetFile( this.state.currentFile)  }} className="float-right" style={buttonStyle} iconStyle={iconStyle}>
+                                      <UndoIcon />
+                                     </IconButton>}
+                  file={this.state.currentFile} >
+              </EditorToolbar>
               </div>
               <div className="Editor-root" >
                 <div className="row Editor-elem">

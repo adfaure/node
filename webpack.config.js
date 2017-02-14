@@ -3,9 +3,9 @@ var webpack = require("webpack");
 module.exports = {
     entry: {
       app: './src/app.js',
-      vendor: [ 'react', 
+      vendor: [ 'react',
                 'react-dom',
-                'react-redux', 
+                'react-redux',
                 'redux',
                 'redux-thunk' ]
     },
@@ -19,7 +19,9 @@ module.exports = {
             exclude: /node_modules/,
             loader: 'babel-loader'
         },
-        {test: /\.json$/, loader: 'json-loader'}
+        {test: /\.json$/, loader: 'json-loader'},
+        { test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "url-loader?limit=10000&minetype=application/font-woff" },
+        { test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/, loader: "file-loader" }
         ]
     },
     plugins: [
